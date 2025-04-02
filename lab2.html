@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông số Yêu cầu Kiến trúc - Hệ thống Quản lý Học tập</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            background-color: #3498db;
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        h3 {
+            color: #2980b9;
+        }
+        .section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        ul, ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .diagram-placeholder {
+            background-color: #ecf0f1;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            border: 1px dashed #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Thông số Yêu cầu Kiến trúc</h1>
+    <h2>Hệ thống Quản lý Học tập (LMS) - Kiến trúc Client-Server</h2>
+
+    <div class="section">
+        <h2>1. Giới thiệu</h2>
+        <h3>1.1 Mục đích</h3>
+        <p>Tài liệu này phác thảo các yêu cầu kiến trúc cho Hệ thống Quản lý Học tập (LMS) dựa trên mô hình Client-Server. Nó đóng vai trò như một bản thiết kế để thiết kế, phát triển và triển khai một hệ thống có khả năng mở rộng, bảo mật và hiệu quả nhằm quản lý các quy trình giáo dục, đảm bảo phù hợp với các mục tiêu doanh nghiệp.</p>
+
+        <h3>1.2 Phạm vi</h3>
+        <p>Phạm vi bao gồm việc thiết kế và triển khai LMS với giao diện người dùng dựa trên React, backend Spring Boot, cơ sở dữ liệu SQL Server và tích hợp lưu trữ đám mây. Hệ thống hướng đến các bên liên quan như học viên, giáo viên và quản trị viên, nhằm mục đích đơn giản hóa quản lý khóa học, quản trị người dùng và phân tích học tập.</p>
+
+        <h3>1.3 Đối tượng</h3>
+        <p>Tài liệu này dành cho:</p>
+        <ul>
+            <li>Kiến trúc sư: Để hiểu thiết kế hệ thống và các yêu cầu kỹ thuật.</li>
+            <li>Lập trình viên: Để triển khai các thành phần và chức năng được chỉ định.</li>
+            <li>Quản lý dự án: Để giám sát thời gian, nguồn lực và kết quả đầu ra.</li>
+            <li>Các bên liên quan: Để đảm bảo hệ thống phù hợp với mục tiêu kinh doanh và giáo dục.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>2. Bối cảnh</h2>
+        <h3>2.1 Bối cảnh Kinh doanh</h3>
+        <p>LMS đáp ứng nhu cầu ngày càng tăng về các nền tảng giáo dục số, được thúc đẩy bởi xu hướng học tập từ xa, nhu cầu phân phối khóa học có khả năng mở rộng và yêu cầu về thông tin chi tiết dựa trên dữ liệu về hiệu suất học viên. Các thách thức bao gồm đảm bảo khả năng truy cập, bảo mật dữ liệu và sự tham gia của người dùng.</p>
+
+        <h3>2.2 Bối cảnh Kỹ thuật</h3>
+        <p>Môi trường kỹ thuật hiện tại bao gồm:</p>
+        <ul>
+            <li>Frontend: React với Tailwind CSS để xây dựng giao diện người dùng.</li>
+            <li>Backend: Spring Boot với Spring Security và Spring AI để xử lý logic nghiệp vụ và tích hợp AI.</li>
+            <li>Cơ sở dữ liệu: SQL Server để lưu trữ dữ liệu quan hệ.</li>
+            <li>Lưu trữ đám mây: AWS S3 hoặc Firebase Storage cho tài liệu học tập.</li>
+            <li>Triển khai: Docker và Kubernetes để đóng gói và quản lý ứng dụng.</li>
+            <li>Ràng buộc: Hạn chế về tài nguyên phần cứng nếu triển khai on-premise, yêu cầu tuân thủ bảo mật dữ liệu giáo dục.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>3. Mục tiêu Kiến trúc</h2>
+        <h3>3.1 Mục tiêu</h3>
+        <ul>
+            <li>Tính mở rộng: Hỗ trợ số lượng lớn người dùng và khóa học.</li>
+            <li>Độ tin cậy: Đảm bảo hệ thống hoạt động liên tục với thời gian downtime tối thiểu.</li>
+            <li>Bảo mật: Bảo vệ dữ liệu người dùng và tuân thủ các quy định về quyền riêng tư.</li>
+            <li>Hiệu suất: Đáp ứng nhanh chóng các yêu cầu của người dùng.</li>
+            <li>Khả năng sử dụng: Giao diện thân thiện và dễ sử dụng cho mọi đối tượng.</li>
+        </ul>
+
+        <h3>3.2 Tiêu chí Thành công</h3>
+        <ul>
+            <li>Hệ thống hỗ trợ ít nhất 10.000 người dùng đồng thời mà không giảm hiệu suất.</li>
+            <li>Thời gian phản hồi API dưới 2 giây cho 95% yêu cầu.</li>
+            <li>Không có vi phạm bảo mật trong vòng 12 tháng sau khi triển khai.</li>
+            <li>Tỷ lệ hài lòng của người dùng đạt trên 85% qua khảo sát.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>4. Yêu cầu</h2>
+        <h3>4.1 Yêu cầu Chức năng</h3>
+        <h4>4.1.1 Yêu cầu ID: FR-001</h4>
+        <p><strong>Mô tả:</strong> Hệ thống phải cho phép người dùng đăng ký tài khoản và đăng nhập bằng JWT.</p>
+        <p><strong>Ưu tiên:</strong> Cao</p>
+        <p><strong>Nguồn:</strong> Quản lý người dùng</p>
+        <p><strong>Tiêu chí Chấp nhận:</strong> Người dùng có thể tạo tài khoản với email và mật khẩu, nhận mã token JWT sau khi đăng nhập thành công.</p>
+
+        <h4>4.1.2 Yêu cầu ID: FR-002</h4>
+        <p><strong>Mô tả:</strong> Hệ thống phải cho phép quản trị viên tạo, chỉnh sửa và xóa khóa học.</p>
+        <p><strong>Ưu tiên:</strong> Cao</p>
+        <p><strong>Nguồn:</strong> Quản lý khóa học</p>
+        <p><strong>Tiêu chí Chấp nhận:</strong> Quản trị viên có thể thêm khóa học mới, cập nhật thông tin và xóa khóa học khỏi hệ thống.</p>
+
+        <h3>4.2 Yêu cầu Phi Chức năng</h3>
+        <h4>4.2.1 Yêu cầu ID: NFR-001</h4>
+        <p><strong>Mô tả:</strong> Hệ thống phải đảm bảo hiệu suất cao.</p>
+        <p><strong>Thước đo:</strong> Thời gian phản hồi API</p>
+        <p><strong>Giá trị Mục tiêu:</strong> Dưới 2 giây cho 95% yêu cầu</p>
+        <p><strong>Nguồn:</strong> Mục tiêu hiệu suất</p>
+
+        <h4>4.2.2 Yêu cầu ID: NFR-002</h4>
+        <p><strong>Mô tả:</strong> Hệ thống phải bảo mật dữ liệu người dùng.</p>
+        <p><strong>Thước đo:</strong> Số vụ vi phạm bảo mật</p>
+        <p><strong>Giá trị Mục tiêu:</strong> 0 trong 12 tháng</p>
+        <p><strong>Nguồn:</strong> Mục tiêu bảo mật</p>
+
+        <h3>4.3 Ràng buộc</h3>
+        <ul>
+            <li>Quy định: Tuân thủ các quy định về bảo vệ dữ liệu giáo dục (VD: GDPR nếu áp dụng).</li>
+            <li>Công nghệ: Sử dụng các công nghệ đã chọn (React, Spring Boot, SQL Server).</li>
+            <li>Tài nguyên: Hạn chế về phần cứng nếu triển khai on-premise.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>5. Góc nhìn Kiến trúc</h2>
+        <h3>5.1 Góc nhìn Khái niệm</h3>
+        <div class="diagram-placeholder">Biểu đồ: Frontend (React) <--> Backend (Spring Boot) <--> Database (SQL Server) <--> Cloud Storage</div>
+
+        <h3>5.2 Góc nhìn Logic</h3>
+        <p>Frontend giao tiếp với Backend qua API RESTful. Backend xử lý logic nghiệp vụ và truy vấn dữ liệu từ SQL Server. Cloud Storage lưu trữ tài liệu học tập.</p>
+
+        <h3>5.3 Góc nhìn Vật lý</h3>
+        <p>Hệ thống được triển khai trên các container Docker, sử dụng Kubernetes để quản lý. API Gateway và Load Balancer phân phối lưu lượng giữa các instance backend.</p>
+    </div>
+
+    <div class="section">
+        <h2>6. Đánh giá Rủi ro</h2>
+        <h4>6.1 Rủi ro ID: RISK-001</h4>
+        <p><strong>Mô tả:</strong> Quá tải hệ thống khi số lượng người dùng tăng đột biến.</p>
+        <p><strong>Tác động:</strong> Cao</p>
+        <p><strong>Xác suất:</strong> Trung bình</p>
+        <p><strong>Chiến lược Giảm thiểu:</strong> Sử dụng Load Balancer và mở rộng ngang với Kubernetes.</p>
+
+        <h4>6.2 Rủi ro ID: RISK-002</h4>
+        <p><strong>Mô tả:</strong> Lỗ hổng bảo mật trong API.</p>
+        <p><strong>Tác động:</strong> Cao</p>
+        <p><strong>Xác suất:</strong> Thấp</p>
+        <p><strong>Chiến lược Giảm thiểu:</strong> Áp dụng Spring Security và kiểm tra bảo mật định kỳ.</p>
+    </div>
+
+    <div class="section">
+        <h2>7. Khả năng Truy xuất Nguồn gốc</h2>
+        <p>Các yêu cầu FR-001 và FR-002 liên kết với mục tiêu quản lý người dùng và khóa học. Góc nhìn kiến trúc hỗ trợ triển khai các chức năng này.</p>
+    </div>
+
+    <div class="section">
+        <h2>8. Phụ lục</h2>
+        <h3>8.1 Thuật ngữ</h3>
+        <ul>
+            <li>LMS: Hệ thống Quản lý Học tập.</li>
+            <li>JWT: JSON Web Token, dùng để xác thực.</li>
+        </ul>
+
+        <h3>8.2 Tài liệu Tham khảo</h3>
+        <ul>
+            <li>Tài liệu Spring Boot Official Documentation.</li>
+            <li>React Official Documentation.</li>
+        </ul>
+
+        <h3>8.3 Nhật ký Thay đổi</h3>
+        <table>
+            <tr>
+                <th>Phiên bản</th>
+                <th>Ngày</th>
+                <th>Mô tả Thay đổi</th>
+                <th>Tác giả</th>
+            </tr>
+            <tr>
+                <td>1.0</td>
+                <td>2025-04-02</td>
+                <td>Bản nháp ban đầu</td>
+                <td>Grok 3</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
