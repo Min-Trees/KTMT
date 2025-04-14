@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài thực hành số 5 - Xác thực Kiến trúc bằng Kịch bản</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        td {
+            background-color: #ffffff;
+        }
+        tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+        .highlight {
+            background-color: #ecf0f1;
+            padding: 5px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        @media screen and (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Bài thực hành số 5: Xác thực Kiến trúc bằng Kịch bản</h1>
+    <div class="section">
+        <table>
+            <tr>
+                <th>STT</th>
+                <th>Thuộc tính chất lượng</th>
+                <th>Sự cố giả định</th>
+                <th>Phản hồi</th>
+                <th>Mong đợi</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Tính sẵn sàng</td>
+                <td>Trong giờ học cao điểm (8-10h sáng), server backend bị tắt đột ngột do lỗi hệ điều hành hoặc thiếu tài nguyên.</td>
+                <td>Tất cả người dùng bị ngắt kết nối, các thao tác gửi bài tập hoặc xem tài liệu sẽ thất bại. Trang web báo lỗi 5xx.</td>
+                <td>Hệ thống nên có thông báo lỗi thân thiện người dùng và khuyến khích quay lại sau, đồng thời cần có cách backup dữ liệu để khôi phục nhanh chóng.</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Hiệu năng</td>
+                <td>Trong đợt kiểm tra đầu vào, 100 học viên cùng lúc truy cập trang làm bài kiểm tra. Server CPU tăng vọt.</td>
+                <td>Thời gian tải trang kéo dài, bài làm chậm phản hồi, đôi khi timeout.</td>
+                <td>Dù không có Load Balancer, hệ thống nên hỗ trợ 100–200 người dùng đồng thời với thời gian phản hồi dưới 5 giây nhờ tối ưu truy vấn và caching.</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Bảo mật</td>
+                <td>Một người dùng chưa đăng nhập gửi yêu cầu truy cập API /api/user/profile qua Postman.</td>
+                <td>Hệ thống trả về lỗi 401 Unauthorized, không tiết lộ thêm thông tin hệ thống hoặc stack trace.</td>
+                <td>Mọi API yêu cầu phải có JWT token, hệ thống phải chặn ngay các truy cập không xác thực.</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Toàn vẹn dữ liệu</td>
+                <td>Học viên cố chỉnh sửa điểm số bài tập bằng cách sửa request trên DevTools (ví dụ đổi điểm từ 4 lên 9).</td>
+                <td>Server không xử lý vì điểm chỉ được chấm qua backend logic hoặc giáo viên.</td>
+                <td>Hệ thống phải xác minh quyền thao tác và không nhận bất kỳ thay đổi từ phía client không hợp lệ.</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Phục hồi</td>
+                <td>Trong khi học viên đang làm bài tập, mất điện đột ngột khiến trình duyệt bị tắt.</td>
+                <td>Khi học viên quay lại, tất cả dữ liệu bài tập đã mất.</td>
+                <td>Hệ thống nên hỗ trợ lưu tự động nội dung bài tập định kỳ (auto-save) hoặc cho phép lưu nháp thủ công.</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>Truy vết (Auditability)</td>
+                <td>Quản trị viên phát hiện một lớp học bị xóa, muốn biết ai đã thực hiện thao tác đó.</td>
+                <td>Không có log hoặc lịch sử thao tác.</td>
+                <td>Hệ thống phải lưu vết các thao tác quan trọng như xóa lớp, sửa khóa học, ghi nhận người thực hiện và thời điểm.</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>Hiệu năng</td>
+                <td>Giáo viên upload một file video dung lượng 200MB làm tài liệu giảng dạy.</td>
+                <td>Server mất nhiều thời gian để xử lý, có thể bị timeout nếu kết nối mạng không ổn định.</td>
+                <td>Cần có thanh tiến trình upload, giới hạn dung lượng nếu cần thiết, và xử lý lỗi tốt để không mất dữ liệu upload.</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>Sẵn sàng</td>
+                <td>Server lưu trữ file tài liệu bị tắt tạm thời (ví dụ cloud bị gián đoạn).</td>
+                <td>Học viên truy cập file PDF nhưng nhận lỗi 404 hoặc 500.</td>
+                <td>Giao diện nên hiển thị thông báo rõ ràng như "Tài liệu đang được bảo trì" thay vì lỗi hệ thống không thân thiện.</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>Độ tin cậy</td>
+                <td>Giáo viên đang chấm điểm bài tập, giữa chừng hệ thống gặp sự cố.</td>
+                <td>Sau khi restart, mất toàn bộ thông tin đang chấm dở.</td>
+                <td>Hệ thống nên lưu trạng thái tạm thời sau mỗi thao tác lớn để đảm bảo tiếp tục được sau khi lỗi.</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>Bảo mật</td>
+                <td>Token JWT hết hạn trong lúc học viên đang sử dụng hệ thống.</td>
+                <td>Yêu cầu tiếp theo bị trả về 401 và người dùng không hiểu chuyện gì đang xảy ra.</td>
+                <td>Hệ thống nên tự động chuyển sang trang đăng nhập hoặc hiển thị popup yêu cầu xác thực lại, không gây mất dữ liệu.</td>
+            </tr>
+            <tr>
+                <td>11</td>
+                <td>Toàn vẹn dữ liệu</td>
+                <td>Học viên bấm "Nộp bài" nhiều lần do kết nối mạng kém.</td>
+                <td>Hệ thống ghi nhận nhiều bản nộp bài giống nhau.</td>
+                <td>Hệ thống cần kiểm tra trùng lặp và chỉ chấp nhận bản nộp cuối cùng hoặc mới nhất.</td>
+            </tr>
+            <tr>
+                <td>12</td>
+                <td>Sẵn sàng</td>
+                <td>Server được cập nhật (deploy phiên bản mới) trong giờ cao điểm.</td>
+                <td>Người dùng gặp lỗi 502 hoặc không thể truy cập.</td>
+                <td>Cần có chế độ bảo trì hiển thị trên giao diện và lên lịch deploy ngoài giờ cao điểm.</td>
+            </tr>
+            <tr>
+                <td>13</td>
+                <td>Bảo mật</td>
+                <td>Học viên cố ý gọi API phân quyền người dùng để trở thành giáo viên.</td>
+                <td>Server từ chối vì không đủ quyền.</td>
+                <td>Role-based Access Control cần được kiểm tra chặt chẽ ở backend và ghi log lại nếu phát hiện truy cập trái phép.</td>
+            </tr>
+            <tr>
+                <td>14</td>
+                <td>Hiệu năng</td>
+                <td>Trang Feed hiển thị 300 thông báo liên tục.</td>
+                <td>Trình duyệt lag, tải chậm hoặc crash.</td>
+                <td>Cần phân trang hoặc lazy loading để đảm bảo trải nghiệm mượt mà.</td>
+            </tr>
+            <tr>
+                <td>15</td>
+                <td>Toàn vẹn dữ liệu</td>
+                <td>Học viên sửa ID lớp trong API để nộp bài cho lớp khác.</td>
+                <td>Nếu không kiểm tra, bài sẽ vào lớp sai.</td>
+                <td>Server phải kiểm tra người dùng có thực sự thuộc lớp đó không trước khi lưu bài.</td>
+            </tr>
+            <tr>
+                <td>16</td>
+                <td>Khả năng sử dụng</td>
+                <td>Học viên quên bấm lưu bài làm và rời khỏi trang.</td>
+                <td>Tất cả dữ liệu bị mất.</td>
+                <td>Hệ thống cần hiện cảnh báo trước khi đóng tab nếu bài chưa được lưu, đồng thời hỗ trợ lưu nháp.</td>
+            </tr>
+            <tr>
+                <td>17</td>
+                <td>Bảo mật</td>
+                <td>Admin quên đăng xuất tài khoản trên máy công cộng.</td>
+                <td>Người khác có thể sử dụng tài khoản admin.</td>
+                <td>Token có thời hạn ngắn (ví dụ 15 phút không hoạt động) và cần có nút "Logout từ tất cả thiết bị".</td>
+            </tr>
+            <tr>
+                <td>18</td>
+                <td>Phục hồi</td>
+                <td>Khi đang upload bài tập, kết nối mạng học viên bị mất.</td>
+                <td>File bị lỗi hoặc không được ghi nhận.</td>
+                <td>Hệ thống nên hỗ trợ resume upload nếu mất kết nối hoặc thông báo rõ ràng nếu lỗi xảy ra.</td>
+            </tr>
+            <tr>
+                <td>19</td>
+                <td>Linh hoạt</td>
+                <td>Quản trị viên cần đổi lịch học cho 10 lớp khác nhau.</td>
+                <td>Phải chỉnh sửa thủ công từng lớp.</td>
+                <td>Hệ thống nên hỗ trợ thao tác hàng loạt hoặc import từ file Excel để cập nhật nhanh chóng.</td>
+            </tr>
+            <tr>
+                <td>20</td>
+                <td>Độ tin cậy</td>
+                <td>Vào lúc 20h tối, hệ thống bất ngờ ngưng hoạt động do server quá tải.</td>
+                <td>Người dùng không thể đăng nhập hoặc sử dụng hệ thống.</td>
+                <td>Cần cảnh báo trước nếu tài nguyên hệ thống (CPU, RAM, disk) gần cạn và ghi nhận log chi tiết để xử lý sớm.</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
