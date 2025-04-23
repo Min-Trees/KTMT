@@ -99,119 +99,21 @@ tr:hover {
     border-left: 4px solid #2980b9;
     border-radius: 5px;
 }
-
-/* CSS cho Process Diagram */
 .diagram-container {
     width: 100%;
-    max-width: 2000px;
+    max-width: 1400px;
     margin: 20px auto;
-    position: relative;
-    min-height: 1000px;
-    overflow-x: auto;
-    padding: 40px;
+    padding: 20px;
     background: linear-gradient(135deg, #f4f4f4 0%, #ecf0f1 100%);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     border-radius: 12px;
-}
-.diagram-container h2 {
-    margin: 0 0 20px;
     text-align: center;
-    color: #2c3e50;
 }
-.process-box {
-    position: absolute;
-    width: 260px;
-    padding: 20px;
-    border: 2px solid #2c3e50;
-    background: linear-gradient(145deg, #ffffff, #ecf0f1);
-    text-align: center;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
-    font-size: 14px;
-    z-index: 1;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.process-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
-}
-.process-box h4 {
-    margin: 0 0 10px;
-    font-size: 16px;
-    color: #2c3e50;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-.process-box p {
-    margin: 8px 0;
-    font-size: 13px;
-    color: #2c3e50;
-    font-style: italic;
-}
-.process-box ul {
-    list-style-type: none;
-    padding: 0;
-    font-size: 13px;
-    text-align: left;
-}
-.process-box ul li {
-    margin: 6px 0;
-    padding-left: 15px;
-    position: relative;
-    color: #2c3e50;
-}
-.process-box ul li::before {
-    content: '➤';
-    position: absolute;
-    left: 0;
-    color: #3498db;
-}
-.arrow {
-    position: absolute;
-    background: linear-gradient(to right, #2c3e50, #3498db);
-    z-index: 0;
-    border-radius: 2px;
-}
-.arrow::after {
-    content: '';
-    position: absolute;
-    border-left: 8px solid #3498db;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-}
-.arrow-horizontal {
-    height: 3px;
-}
-.arrow-horizontal::after {
-    right: -8px;
-    top: -5px;
-}
-.arrow-vertical {
-    width: 3px;
-}
-.arrow-vertical::after {
-    bottom: -8px;
-    left: -5px;
-    transform: rotate(90deg);
-}
-.arrow-diagonal {
-    height: 3px;
-    transform-origin: left;
-}
-.arrow-diagonal::after {
-    right: -8px;
-    top: -5px;
-}
-.arrow-label {
-    position: absolute;
-    font-size: 12px;
-    color: #fff;
-    background: #2980b9;
-    padding: 5px 10px;
-    border-radius: 50%;
-    z-index: 2;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    font-weight: bold;
+.diagram-container img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
 }
 /* Responsive */
 @media (max-width: 768px) {
@@ -219,21 +121,7 @@ tr:hover {
         width: 95%;
     }
     .diagram-container {
-        min-height: 1400px;
-    }
-    .process-box {
-        width: 220px;
-        font-size: 12px;
-    }
-    .process-box h4 {
-        font-size: 14px;
-    }
-    .process-box p, .process-box ul {
-        font-size: 11px;
-    }
-    .arrow-label {
-        font-size: 10px;
-        padding: 3px 6px;
+        padding: 10px;
     }
 }
     </style>
@@ -242,7 +130,6 @@ tr:hover {
 <body>
     <div class="header">
         <h1>Báo cáo: Hệ thống học tiếng Anh trực tuyến và LMS</h1>
-
     </div>
 
     <div class="container">
@@ -424,92 +311,57 @@ tr:hover {
             </div>
         </div>
 
-        <!-- Vẽ Process Diagram bằng HTML/CSS -->
+        <!-- Biểu đồ tiến trình bằng hình ảnh SVG -->
         <div class="diagram-container">
             <h2>Biểu đồ tiến trình (Process Diagram)</h2>
-            <!-- Tiến trình xác thực người dùng -->
-            <div class="process-box" style="top: 100px; left: 40px;">
-                <h4><<Tiến trình>><br>Tiến trình xác thực người dùng</h4>
-                <p>AuthenticationController<br>(từ Authentication)</p>
+            <img src="b3.svg" alt="Process Diagram of LMS System" />
+        </div>
+
+        <!-- Phần Size and Performance -->
+        <h2>Size and Performance</h2>
+        <div class="process-section">
+            <p>Kiến trúc phần mềm của hệ thống ABC-ENGLISH được thiết kế để đáp ứng các yêu cầu về kích thước và hiệu suất, như đã được nêu trong Bản Đặc Tả Phụ [15]:</p>
+            <ul>
+                <li><strong>Số lượng người dùng đồng thời:</strong> Hệ thống hỗ trợ lên đến 2000 người dùng đồng thời đối với cơ sở dữ liệu trung tâm và tối đa 500 người dùng đồng thời trên các máy chủ cục bộ trong bất kỳ thời điểm nào, đảm bảo xử lý lượng lớn yêu cầu mà không quá tải.</li>
+                <li><strong>Độ trễ khi truy cập cơ sở dữ liệu:</strong> Truy cập cơ sở dữ liệu danh mục khóa học với độ trễ không quá 10 giây, đảm bảo người dùng truy cập thông tin nhanh chóng.</li>
+                <li><strong>Hiệu suất giao dịch:</strong> Hoàn thành 80% tất cả các giao dịch (đăng ký khóa học, làm bài kiểm tra, nhận điểm số) trong vòng 2 phút, tối ưu hóa trải nghiệm người dùng.</li>
+                <li><strong>Yêu cầu về tài nguyên của client:</strong> Phần mềm client yêu cầu dưới 20 MB dung lượng ổ đĩa và 32 MB RAM, phù hợp với các máy tính cấu hình thấp.</li>
+                <li><strong>Kiến trúc Client-Server:</strong> Dựa trên mô hình client-server, với client triển khai trên PC cục bộ hoặc từ xa, tối ưu hóa tài nguyên hệ thống bằng cách giảm yêu cầu bộ nhớ và dung lượng ổ đĩa.</li>
+            </ul>
+        </div>
+
+        <!-- Phần Quality -->
+        <h2>Quality</h2>
+        <div class="process-section">
+            <p>Kiến trúc phần mềm của hệ thống ABC-ENGLISH hỗ trợ các yêu cầu chất lượng, như được nêu trong Bản Đặc Tả Phụ [15]:</p>
+            <ul>
+                <li><strong>Giao diện người dùng:</strong> Tuân thủ tiêu chuẩn hiện đại, tương thích với các hệ điều hành phổ biến, dễ sử dụng cho người dùng có kiến thức cơ bản về máy tính, không cần đào tạo thêm.</li>
+                <li><strong>Hỗ trợ trực tuyến:</strong> Mỗi tính năng có chức năng trợ giúp trực tuyến với hướng dẫn chi tiết, bao gồm các bước thực hiện và định nghĩa thuật ngữ hoặc từ viết tắt.</li>
+                <li><strong>Khả năng hoạt động liên tục:</strong> Hệ thống hoạt động 24/7, với thời gian ngừng hoạt động tối đa 4% trong một năm, đảm bảo độ ổn định cao.</li>
+                <li><strong>Thời gian giữa các sự cố (MTBF):</strong> Vượt quá 300 giờ, đảm bảo độ tin cậy trong quá trình hoạt động.</li>
+                <li><strong>Cập nhật phần mềm client:</strong> Các bản nâng cấp client có thể tải từ máy chủ qua internet, giúp người dùng dễ dàng tiếp cận bản cập nhật mới.</li>
+            </ul>
+        </div>
+
+        <!-- Phần Deployment View -->
+        <h2>Deployment View</h2>
+        <div class="process-section">
+            <p>Phần này mô tả kiến trúc triển khai (Deployment View) của hệ thống ABC-ENGLISH, bao gồm các node vật lý và cách ánh xạ các tiến trình (từ Process View) tới các node này. Hệ thống được triển khai qua Internet, không sử dụng mạng LAN nội bộ, để đảm bảo khả năng truy cập từ xa.</p>
+            <div class="diagram-container">
+                <h2>Biểu đồ triển khai (Deployment Diagram)</h2>
+                <img src="b3_2.svg" alt="Deployment Diagram of LMS System" />
+            </div>
+            <div class="diagram-description">
+                <h3>Mô tả biểu đồ triển khai</h3>
+                <p>Biểu đồ triển khai thể hiện các node vật lý và cách các tiến trình được phân bổ trong hệ thống:</p>
                 <ul>
-                    <li>đăng nhập()</li>
-                    <li>đăng ký()</li>
+                    <li><strong>Desktop PC 1 (Ứng dụng học viên):</strong> Chạy ứng dụng dành cho học viên, ánh xạ tới tiến trình <code>UserAuthenticationProcess</code> (phía client) và <code>StudentRegistrationProcess</code> (phía client). Kết nối với Registration Server thông qua Internet.</li>
+                    <li><strong>Desktop PC 2 (Hệ thống danh mục khóa học):</strong> Chạy ứng dụng truy cập danh mục khóa học, ánh xạ tới tiến trình <code>CourseManagementProcess</code> (phía client). Kết nối với Registration Server thông qua Internet.</li>
+                    <li><strong>Desktop PC 3 (Hệ thống thanh toán và quản lý):</strong> Chạy ứng dụng quản lý bài tập và buổi học, ánh xạ tới tiến trình <code>AssignmentManagementProcess</code> (phía client) và <code>SessionManagementProcess</code> (phía client). Kết nối với Registration Server thông qua Internet.</li>
+                    <li><strong>Registration Server (Máy chủ đăng ký):</strong> Là máy chủ trung tâm, ánh xạ tới các tiến trình chính: <code>UserAuthenticationProcess</code>, <code>CourseManagementProcess</code>, <code>StudentRegistrationProcess</code>, <code>AssignmentManagementProcess</code>, <code>SessionManagementProcess</code>. Xử lý toàn bộ logic nghiệp vụ và lưu trữ dữ liệu.</li>
+                    <li><strong>Internet:</strong> Tất cả giao tiếp giữa các Desktop PC và Registration Server đều được thực hiện qua Internet, đảm bảo khả năng truy cập từ xa và dễ dàng mở rộng.</li>
                 </ul>
             </div>
-
-            <!-- Tiến trình quản lý khóa học -->
-            <div class="process-box" style="top: 100px; left: 450px;">
-                <h4><<Tiến trình>><br>Tiến trình quản lý khóa học</h4>
-                <p>CourseController<br>(từ CourseManagement)</p>
-                <ul>
-                    <li>tạo khóa học()</li>
-                    <li>cập nhật khóa học()</li>
-                    <li>xóa khóa học()</li>
-                </ul>
-            </div>
-
-            <!-- Tiến trình đăng ký của học viên -->
-            <div class="process-box" style="top: 100px; left: 860px;">
-                <h4><<Tiến trình>><br>Tiến trình đăng ký của học viên</h4>
-                <p>RegistrationController<br>(từ Registration)</p>
-                <ul>
-                    <li>đăng ký khóa học()</li>
-                    <li>làm bài kiểm tra đầu vào()</li>
-                    <li>lấy thông tin học viên()</li>
-                </ul>
-            </div>
-
-            <!-- Tiến trình quản lý bài tập -->
-            <div class="process-box" style="top: 510px; left: 450px;">
-                <h4><<Tiến trình>><br>Tiến trình quản lý bài tập</h4>
-                <p>AssignmentController<br>(từ Assignment)</p>
-                <ul>
-                    <li>tạo bài tập()</li>
-                    <li>nộp bài tập()</li>
-                    <li>chấm bài tập()</li>
-                </ul>
-            </div>
-
-            <!-- Tiến trình quản lý buổi học -->
-            <div class="process-box" style="top: 510px; left: 860px;">
-                <h4><<Tiến trình>><br>Tiến trình quản lý buổi học</h4>
-                <p>SessionController<br>(từ Session)</p>
-                <ul>
-                    <li>tạo buổi học()</li>
-                    <li>điểm danh()</li>
-                    <li>thêm nhận xét()</li>
-                </ul>
-            </div>
-
-            <!-- Proxy hệ thống thông báo -->
-            <div class="process-box" style="top: 510px; left: 1200px;">
-                <h4><<Proxy hệ thống con>><br>Hệ thống thông báo<br>(từ Notification)</h4>
-                <ul>
-                    <li>gửi thông báo()</li>
-                </ul>
-            </div>
-
-            <!-- Mũi tên kết nối -->
-            <!-- Từ UserAuthenticationProcess đến CourseManagementProcess -->
-            <div class="arrow arrow-horizontal" style="width: 368px; top: 160px; left: 280px;"></div>
-
-            <!-- Từ CourseManagementProcess đến StudentRegistrationProcess -->
-            <div class="arrow arrow-horizontal" style="width: 368px; top: 160px; left: 690px;"></div>
-
-            <!-- Từ StudentRegistrationProcess đến AssignmentManagementProcess -->
-            <div class="arrow arrow-vertical" style="height: 300px; top: 200px; left: 940px;"></div>
-
-            <!-- Từ StudentRegistrationProcess đến SessionManagementProcess -->
-            <div class="arrow arrow-vertical" style="height: 300px; top: 200px; left: 1020px;"></div>
-
-            <!-- Từ AssignmentManagementProcess đến SessionManagementProcess -->
-            <div class="arrow arrow-horizontal" style="width: 368px; top: 570px; left: 690px;"></div>
-
-            <!-- Từ AssignmentManagementProcess đến NotificationSystem -->
-            <div class="arrow arrow-diagonal" style="width: 500px; top: 570px; left: 690px; transform: rotate(-30deg);"></div>
-
-            <!-- Từ SessionManagementProcess đến NotificationSystem -->
-            <div class="arrow arrow-horizontal" style="width: 368px; top: 570px; left: 1080px;"></div>
         </div>
     </div>
 </body>
