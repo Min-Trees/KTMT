@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+.container {
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 25px;
+    text-align: center;
+    border-bottom: 5px solid #3498db;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.header h1 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 700;
+}
+.header p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+h2 {
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 8px;
+    margin-top: 35px;
+    font-size: 24px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+th {
+    background-color: #3498db;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+tr:hover {
+    background-color: #ecf0f1;
+    transition: background-color 0.3s ease;
+}
+.category {
+    font-weight: bold;
+    background-color: #ecf0f1;
+}
+.process-section {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: 20px 0;
+}
+.process-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+.process-section li {
+    margin: 15px 0;
+    padding: 15px;
+    background-color: #ecf0f1;
+    border-left: 4px solid #3498db;
+    border-radius: 5px;
+}
+.process-section li strong {
+    color: #2c3e50;
+    font-size: 16px;
+}
+.diagram-description {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #ecf0f1;
+    border-left: 4px solid #2980b9;
+    border-radius: 5px;
+}
+.diagram-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #f4f4f4 0%, #ecf0f1 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    text-align: center;
+}
+.diagram-container img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+    .diagram-container {
+        padding: 10px;
+    }
+}
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <h1>Báo cáo: Hệ thống học tiếng Anh trực tuyến và LMS</h1>
+    </div>
+
+    <div class="container">
+        <!-- Giới thiệu và Chức năng chính giữ nguyên -->
+        <h2>Giới thiệu</h2>
+
+        <h2>Chức năng chính của hệ thống</h2>
+        <table>
+            <tr>
+                <th>Danh mục</th>
+                <th>Chức năng</th>
+                <th>Mô tả chi tiết</th>
+            </tr>
+            <tr class="category">
+                <td rowspan="11">Quản lý hệ thống</td>
+                <td>Quản lý hệ thống</td>
+                <td>Quản lý cấu hình hệ thống, bao gồm bảo mật (JWT), hiệu suất (hỗ trợ 1000 người dùng đồng thời), và triển khai (Docker).</td>
+            </tr>
+            <tr>
+                <td>Quản lý người dùng</td>
+                <td>Quản lý tài khoản học viên, giáo viên, quản trị viên: đăng ký, phân quyền (role-based), cập nhật thông tin, xóa tài khoản.</td>
+            </tr>
+            <tr>
+                <td>Quản lý khóa học</td>
+                <td>Tạo khóa học mới, chỉnh sửa thông tin (tên, mô tả, thời lượng), xóa khóa học, và gán giáo viên phụ trách.</td>
+            </tr>
+            <tr>
+                <td>Quản lý tài liệu</td>
+                <td>Upload tài liệu học tập (PDF, video), lưu trữ trên cloud, phân phối tài liệu cho học viên theo khóa học.</td>
+            </tr>
+            <tr>
+                <td>Quản lý lớp học</td>
+                <td>Tổ chức lớp học theo khóa học, gán học viên và giáo viên, quản lý lịch học và trạng thái lớp.</td>
+            </tr>
+            <tr>
+                <td>Quản lý buổi học</td>
+                <td>Lên lịch buổi học, theo dõi tiến độ (đã hoàn thành, đang diễn ra), ghi nhận điểm danh và nhận xét.</td>
+            </tr>
+            <tr>
+                <td>Quản lý bài tập</td>
+                <td>Tạo bài tập (trắc nghiệm, tự luận), chấm điểm tự động hoặc thủ công, lưu trữ kết quả bài tập.</td>
+            </tr>
+            <tr>
+                <td>Quản lý kết quả học tập</td>
+                <td>Lưu trữ kết quả học tập (điểm bài tập, bài kiểm tra), hiển thị báo cáo tiến độ cho học viên và giáo viên.</td>
+            </tr>
+            <tr>
+                <td>Quản lý nhận xét</td>
+                <td>Giáo viên nhận xét học viên sau mỗi buổi học hoặc bài tập, học viên có thể phản hồi nhận xét.</td>
+            </tr>
+            <tr>
+                <td>Quản lý trang Feed</td>
+                <td>Hiển thị thông báo hệ thống, cập nhật khóa học, thông tin lớp học, và các sự kiện quan trọng.</td>
+            </tr>
+            <tr>
+                <td>Quản lý chứng chỉ</td>
+                <td>Cấp chứng chỉ (PDF) khi học viên hoàn thành khóa học, hỗ trợ tải xuống và gửi qua email.</td>
+            </tr>
+            <tr class="category">
+                <td rowspan="10">Chức năng của học viên</td>
+                <td>Đăng ký</td>
+                <td>Tạo tài khoản mới với thông tin cá nhân (email, mật khẩu, tên, số điện thoại).</td>
+            </tr>
+            <tr>
+                <td>Đăng nhập</td>
+                <td>Truy cập hệ thống bằng email và mật khẩu, sử dụng JWT để xác thực.</td>
+            </tr>
+            <tr>
+                <td>Kiểm tra đầu vào</td>
+                <td>Thực hiện bài kiểm tra đầu vào (trắc nghiệm), nhận kết quả và gợi ý lộ trình học phù hợp (A1, A2, B1, v.v.).</td>
+            </tr>
+            <tr>
+                <td>Xem thông tin khóa học</td>
+                <td>Xem chi tiết khóa học: mô tả, thời lượng, giáo viên, lịch học, và tài liệu liên quan.</td>
+            </tr>
+            <tr>
+                <td>Xem thông tin lớp học</td>
+                <td>Xem lịch học, danh sách học viên, giáo viên, và trạng thái lớp (đang diễn ra, đã kết thúc).</td>
+            </tr>
+            <tr>
+                <td>Xem tài liệu</td>
+                <td>Tải xuống hoặc xem trực tuyến tài liệu học tập (PDF, video) được cung cấp trong khóa học.</td>
+            </tr>
+            <tr>
+                <td>Thực hiện bài tập</td>
+                <td>Làm bài tập trắc nghiệm hoặc tự luận, nộp bài trực tuyến trong thời hạn quy định.</td>
+            </tr>
+            <tr>
+                <td>Xem kết quả</td>
+                <td>Xem điểm số bài tập, bài kiểm tra, và nhận xét từ giáo viên.</td>
+            </tr>
+            <tr>
+                <td>Theo dõi tiến độ</td>
+                <td>Xem tiến độ học tập: số buổi học đã hoàn thành, điểm số trung bình, và lộ trình học tập.</td>
+            </tr>
+            <tr class="category">
+                <td rowspan="3">Chức năng của giáo viên</td>
+                <td>Thao tác tài liệu</td>
+                <td>Upload, chỉnh sửa, xóa tài liệu học tập, gán tài liệu cho từng lớp học hoặc buổi học.</td>
+            </tr>
+            <tr>
+                <td>Thao tác bài tập</td>
+                <td>Tạo bài tập, đặt thời hạn nộp bài, chấm điểm tự động hoặc thủ công, gửi phản hồi cho học viên.</td>
+            </tr>
+            <tr>
+                <td>Thao tác buổi học</td>
+                <td>Điểm danh học viên, ghi nhận nhận xét sau mỗi buổi học, cập nhật trạng thái buổi học.</td>
+            </tr>
+        </table>
+
+        <h2>Luồng xử lý (Process View)</h2>
+        <p>Phần này mô tả chi tiết các tiến trình chính của Hệ thống học tiếng Anh trực tuyến và LMS, cách chúng tương tác với nhau, và cách chúng ánh xạ đến các chức năng của hệ thống. Mỗi tiến trình được thiết kế để đảm bảo hiệu suất cao, bảo mật, và khả năng mở rộng, với mục tiêu hỗ trợ tối đa 1000 người dùng đồng thời mà không ảnh hưởng đến trải nghiệm người dùng.</p>
+        
+        <div class="process-section">
+            <ul>
+                <li>
+                    <strong>Tiến trình xác thực người dùng (UserAuthenticationProcess)</strong><br>
+                    Quản lý xác thực người dùng bằng JSON Web Token (JWT). Tiến trình này đảm bảo rằng chỉ những người dùng hợp lệ mới có thể truy cập hệ thống, đồng thời bảo vệ dữ liệu nhạy cảm.<br>
+                    <strong>Phương thức:</strong><br>
+                    - <code>đăng nhập()</code>: Xác thực thông tin đăng nhập (email, mật khẩu), tạo và trả về JWT token cho client, với thời hạn token là 24 giờ.<br>
+                    - <code>đăng ký()</code>: Tạo tài khoản mới, mã hóa mật khẩu bằng BCrypt, và lưu thông tin vào cơ sở dữ liệu, đồng thời gửi email xác nhận cho người dùng.<br>
+                    <strong>Tương tác:</strong> Tiến trình này là bước đầu tiên, cung cấp token cho các tiến trình khác để xác thực yêu cầu. Nó cũng tích hợp với hệ thống phân quyền để gán vai trò (học viên, giáo viên, quản trị viên).<br>
+                    <strong>Hiệu suất:</strong> Được tối ưu hóa để xử lý 500 yêu cầu xác thực mỗi giây.
+                </li>
+                <li>
+                    <strong>Tiến trình quản lý khóa học (CourseManagementProcess)</strong><br>
+                    Quản lý toàn bộ vòng đời của khóa học, từ tạo mới, cập nhật, đến xóa bỏ, đảm bảo tính nhất quán của dữ liệu.<br>
+                    <strong>Phương thức:</strong><br>
+                    - <code>tạo khóa học()</code>: Tạo khóa học mới với thông tin (tên, mô tả, thời lượng, giáo viên), lưu vào cơ sở dữ liệu, và gửi thông báo đến trang Feed.<br>
+                    - <code>cập nhật khóa học()</code>: Cập nhật thông tin khóa học, đảm bảo không ảnh hưởng đến các lớp học đang diễn ra, với cơ chế kiểm tra xung đột lịch học.<br>
+                    - <code>xóa khóa học()</code>: Xóa khóa học, kiểm tra điều kiện (không có lớp học đang hoạt động), và lưu trữ lịch sử xóa để phục hồi nếu cần.<br>
+                    <strong>Tương tác:</strong> Cung cấp dữ liệu khóa học cho Tiến trình đăng ký của học viên và Tiến trình quản lý lớp học.<br>
+                    <strong>Bảo mật:</strong> Chỉ quản trị viên và giáo viên được phân quyền mới có thể thực hiện các thao tác này.
+                </li>
+                <li>
+                    <strong>Tiến trình đăng ký của học viên (StudentRegistrationProcess)</strong><br>
+                    Xử lý đăng ký khóa học và bài kiểm tra đầu vào, đảm bảo học viên được gán vào lộ trình học phù hợp dựa trên trình độ.<br>
+                    <strong>Phương thức:</strong><br>
+                    - <code>đăng ký khóa học()</code>: Đăng ký học viên vào khóa học, kiểm tra điều kiện (số lượng học viên tối đa, thời gian đăng ký), và gửi thông báo xác nhận.<br>
+                    - <code>làm bài kiểm tra đầu vào()</code>: Tạo bài kiểm tra trắc nghiệm (30 câu, 45 phút), chấm điểm tự động, gợi ý lộ trình học (A1, A2, B1, v.v.) dựa trên điểm số.<br>
+                    - <code>lấy thông tin học viên()</code>: Truy xuất thông tin học viên (tên, email, tiến độ học tập, lịch sử đăng ký) để hiển thị trên giao diện người dùng.<br>
+                    <strong>Tương tác:</strong> Kết nối với Tiến trình quản lý bài tập và Tiến trình quản lý buổi học để quản lý hoạt động của học viên, đồng thời gửi thông tin đến Hệ thống thông báo.<br>
+                    <strong>Mở rộng:</strong> Hỗ trợ tích hợp với hệ thống thanh toán để xử lý học phí trong tương lai.
+                </li>
+                <li>
+                    <strong>Tiến trình quản lý bài tập (AssignmentManagementProcess)</strong><br>
+                    Quản lý việc tạo, nộp, và chấm điểm bài tập, hỗ trợ cả bài trắc nghiệm và tự luận, với mục tiêu tối ưu hóa trải nghiệm học tập.<br>
+                    <strong>Phương thức:</strong><br>
+                    - <code>tạo bài tập()</code>: Tạo bài tập mới (trắc nghiệm/tự luận), đặt thời hạn nộp bài, gán cho lớp học, và hỗ trợ đính kèm tài liệu hướng dẫn.<br>
+                    - <code>nộp bài tập()</code>: Cho phép học viên nộp bài, lưu trữ bài nộp trên hệ thống (hỗ trợ file PDF, Word), và gửi thông báo cho giáo viên.<br>
+                    - <code>chấm bài tập()</code>: Chấm điểm tự động (trắc nghiệm) hoặc thủ công (tự luận), gửi phản hồi chi tiết cho học viên, và lưu kết quả vào cơ sở dữ liệu.<br>
+                    <strong>Tương tác:</strong> Giao tiếp với Tiến trình quản lý buổi học để đồng bộ bài tập với lịch học, và với Hệ thống thông báo để gửi thông báo nộp bài hoặc kết quả chấm điểm.<br>
+                    <strong>Hiệu suất:</strong> Hỗ trợ chấm điểm tự động cho 1000 bài trắc nghiệm trong vòng 5 phút.
+                </li>
+                <li>
+                    <strong>Tiến trình quản lý buổi học (SessionManagementProcess)</strong><br>
+                    Quản lý các buổi học, bao gồm lịch học, điểm danh, và nhận xét, nhằm đảm bảo tiến độ học tập được theo dõi chặt chẽ.<br>
+                    <strong>Phương thức:</strong><br>
+                    - <code>tạo buổi học()</code>: Lên lịch buổi học mới, gán giáo viên và lớp học, gửi thông báo cho học viên qua email và trang Feed.<br>
+                    - <code>điểm danh()</code>: Ghi nhận điểm danh học viên, cập nhật trạng thái (có mặt, vắng mặt), và lưu lịch sử điểm danh.<br>
+                    - <code>thêm nhận xét()</code>: Thêm nhận xét của giáo viên cho từng học viên sau buổi học, hỗ trợ định dạng văn bản phong phú (in đậm, gạch đầu dòng).<br>
+                    <strong>Tương tác:</strong> Kết nối với Tiến trình cấp chứng chỉ để cung cấp dữ liệu điểm danh và nhận xét, và với Hệ thống thông báo để gửi nhắc nhở lịch học.<br>
+                    <strong>Bảo mật:</strong> Chỉ giáo viên được phân quyền mới có thể thực hiện điểm danh và thêm nhận xét.
+                </li>
+            </ul>
+
+            <div class="diagram-description">
+                <h3>Mô tả biểu đồ tiến trình</h3>
+                <p>Biểu đồ tiến trình thể hiện sự tương tác giữa các tiến trình trong hệ thống LMS, được thiết kế để tối ưu hóa hiệu suất, bảo mật, và khả năng mở rộng:</p>
+                <ul>
+                    <li><strong>Tiến trình xác thực người dùng</strong>: Là điểm khởi đầu, cung cấp JWT cho tất cả các tiến trình khác để đảm bảo truy cập an toàn. Tiến trình này sử dụng cơ chế mã hóa BCrypt cho mật khẩu và JWT cho xác thực, với thời gian xử lý trung bình 50ms mỗi yêu cầu.</li>
+                    <li><strong>Tiến trình quản lý khóa học</strong>: Tương tác với Tiến trình đăng ký của học viên để cung cấp dữ liệu khóa học, đảm bảo học viên chỉ đăng ký vào các khóa học hợp lệ. Dữ liệu khóa học được lưu trữ trên cơ sở dữ liệu quan hệ (MySQL) với các bảng liên quan (Courses, Teachers, Classes).</li>
+                    <li><strong>Tiến trình đăng ký của học viên</strong>: Liên kết với Tiến trình quản lý bài tập và Tiến trình quản lý buổi học để quản lý toàn bộ hoạt động của học viên trong hệ thống. Tiến trình này cũng tích hợp với bài kiểm tra đầu vào để phân loại trình độ học viên (A1, A2, B1, v.v.) dựa trên tiêu chuẩn CEFR.</li>
+                    <li><strong>Tiến trình quản lý bài tập</strong>: Giao tiếp với Tiến trình quản lý buổi học để đồng bộ bài tập với lịch học, và với Hệ thống thông báo để gửi thông báo nộp bài. Hệ thống hỗ trợ lưu trữ bài nộp trên cloud (AWS S3) để đảm bảo khả năng mở rộng.</li>
+                    <li><strong>Tiến trình quản lý buổi học</strong>: Quản lý lịch học và điểm danh, với khả năng tích hợp với công cụ họp trực tuyến (Zoom, Google Meet) để hỗ trợ học trực tuyến. Dữ liệu điểm danh được sử dụng để tính toán điều kiện cấp chứng chỉ.</li>
+                    <li><strong>Hệ thống thông báo</strong>: Đóng vai trò proxy, nhận yêu cầu từ các tiến trình khác để gửi thông báo qua email, trang Feed, hoặc ứng dụng di động (trong tương lai). Hệ thống này sử dụng hàng đợi (RabbitMQ) để xử lý thông báo không đồng bộ.</li>
+                </ul>
+                <p><strong>Cấu trúc biểu đồ:</strong> Mỗi tiến trình được biểu diễn bằng một hộp với nhãn "Tiến trình". Các mũi tên biểu thị sự tương tác, với số "1" để chỉ một instance duy nhất. Các proxy hệ thống con (như Hệ thống thông báo) được hiển thị bằng các hộp riêng với các phương thức như <code>gửi thông báo()</code>. Biểu đồ được thiết kế để tránh chồng lấn, với các hộp được sắp xếp theo luồng logic từ trái sang phải và từ trên xuống dưới.</p>
+            </div>
+        </div>
+
+        <!-- Biểu đồ tiến trình bằng hình ảnh SVG -->
+        <div class="diagram-container">
+            <h2>Biểu đồ tiến trình (Process Diagram)</h2>
+            <img src="b3.svg" alt="Process Diagram of LMS System" />
+        </div>
+
+        <!-- Phần Size and Performance -->
+        <h2>Size and Performance</h2>
+        <div class="process-section">
+            <p>Kiến trúc phần mềm của hệ thống ABC-ENGLISH được thiết kế để đáp ứng các yêu cầu về kích thước và hiệu suất, như đã được nêu trong Bản Đặc Tả Phụ [15]:</p>
+            <ul>
+                <li><strong>Số lượng người dùng đồng thời:</strong> Hệ thống hỗ trợ lên đến 2000 người dùng đồng thời đối với cơ sở dữ liệu trung tâm và tối đa 500 người dùng đồng thời trên các máy chủ cục bộ trong bất kỳ thời điểm nào, đảm bảo xử lý lượng lớn yêu cầu mà không quá tải.</li>
+                <li><strong>Độ trễ khi truy cập cơ sở dữ liệu:</strong> Truy cập cơ sở dữ liệu danh mục khóa học với độ trễ không quá 10 giây, đảm bảo người dùng truy cập thông tin nhanh chóng.</li>
+                <li><strong>Hiệu suất giao dịch:</strong> Hoàn thành 80% tất cả các giao dịch (đăng ký khóa học, làm bài kiểm tra, nhận điểm số) trong vòng 2 phút, tối ưu hóa trải nghiệm người dùng.</li>
+                <li><strong>Yêu cầu về tài nguyên của client:</strong> Phần mềm client yêu cầu dưới 20 MB dung lượng ổ đĩa và 32 MB RAM, phù hợp với các máy tính cấu hình thấp.</li>
+                <li><strong>Kiến trúc Client-Server:</strong> Dựa trên mô hình client-server, với client triển khai trên PC cục bộ hoặc từ xa, tối ưu hóa tài nguyên hệ thống bằng cách giảm yêu cầu bộ nhớ và dung lượng ổ đĩa.</li>
+            </ul>
+        </div>
+
+        <!-- Phần Quality -->
+        <h2>Quality</h2>
+        <div class="process-section">
+            <p>Kiến trúc phần mềm của hệ thống ABC-ENGLISH hỗ trợ các yêu cầu chất lượng, như được nêu trong Bản Đặc Tả Phụ [15]:</p>
+            <ul>
+                <li><strong>Giao diện người dùng:</strong> Tuân thủ tiêu chuẩn hiện đại, tương thích với các hệ điều hành phổ biến, dễ sử dụng cho người dùng có kiến thức cơ bản về máy tính, không cần đào tạo thêm.</li>
+                <li><strong>Hỗ trợ trực tuyến:</strong> Mỗi tính năng có chức năng trợ giúp trực tuyến với hướng dẫn chi tiết, bao gồm các bước thực hiện và định nghĩa thuật ngữ hoặc từ viết tắt.</li>
+                <li><strong>Khả năng hoạt động liên tục:</strong> Hệ thống hoạt động 24/7, với thời gian ngừng hoạt động tối đa 4% trong một năm, đảm bảo độ ổn định cao.</li>
+                <li><strong>Thời gian giữa các sự cố (MTBF):</strong> Vượt quá 300 giờ, đảm bảo độ tin cậy trong quá trình hoạt động.</li>
+                <li><strong>Cập nhật phần mềm client:</strong> Các bản nâng cấp client có thể tải từ máy chủ qua internet, giúp người dùng dễ dàng tiếp cận bản cập nhật mới.</li>
+            </ul>
+        </div>
+
+        <!-- Phần Deployment View -->
+        <h2>Deployment View</h2>
+        <div class="process-section">
+            <p>Phần này mô tả kiến trúc triển khai (Deployment View) của hệ thống ABC-ENGLISH, bao gồm các node vật lý và cách ánh xạ các tiến trình (từ Process View) tới các node này. Hệ thống được triển khai qua Internet, không sử dụng mạng LAN nội bộ, để đảm bảo khả năng truy cập từ xa.</p>
+            <div class="diagram-container">
+                <h2>Biểu đồ triển khai (Deployment Diagram)</h2>
+                <img src="b3_2.svg" alt="Deployment Diagram of LMS System" />
+            </div>
+            <div class="diagram-description">
+                <h3>Mô tả biểu đồ triển khai</h3>
+                <p>Biểu đồ triển khai thể hiện các node vật lý và cách các tiến trình được phân bổ trong hệ thống:</p>
+                <ul>
+                    <li><strong>Desktop PC 1 (Ứng dụng học viên):</strong> Chạy ứng dụng dành cho học viên, ánh xạ tới tiến trình <code>UserAuthenticationProcess</code> (phía client) và <code>StudentRegistrationProcess</code> (phía client). Kết nối với Registration Server thông qua Internet.</li>
+                    <li><strong>Desktop PC 2 (Hệ thống danh mục khóa học):</strong> Chạy ứng dụng truy cập danh mục khóa học, ánh xạ tới tiến trình <code>CourseManagementProcess</code> (phía client). Kết nối với Registration Server thông qua Internet.</li>
+                    <li><strong>Desktop PC 3 (Hệ thống thanh toán và quản lý):</strong> Chạy ứng dụng quản lý bài tập và buổi học, ánh xạ tới tiến trình <code>AssignmentManagementProcess</code> (phía client) và <code>SessionManagementProcess</code> (phía client). Kết nối với Registration Server thông qua Internet.</li>
+                    <li><strong>Registration Server (Máy chủ đăng ký):</strong> Là máy chủ trung tâm, ánh xạ tới các tiến trình chính: <code>UserAuthenticationProcess</code>, <code>CourseManagementProcess</code>, <code>StudentRegistrationProcess</code>, <code>AssignmentManagementProcess</code>, <code>SessionManagementProcess</code>. Xử lý toàn bộ logic nghiệp vụ và lưu trữ dữ liệu.</li>
+                    <li><strong>Internet:</strong> Tất cả giao tiếp giữa các Desktop PC và Registration Server đều được thực hiện qua Internet, đảm bảo khả năng truy cập từ xa và dễ dàng mở rộng.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
