@@ -49,25 +49,11 @@
             text-align: center;
             margin: 30px 0;
         }
-        svg {
+        img {
             max-width: 100%;
             height: auto;
-        }
-        .component-box {
-            fill: #ecf0f1;
-            stroke: #2c3e50;
-            stroke-width: 2;
-        }
-        .component-text {
-            font-size: 16px;
-            font-weight: bold;
-            fill: #2c3e50;
-        }
-        .arrow {
-            fill: none;
-            stroke: #7f8c8d;
-            stroke-width: 2;
-            marker-end: url(#arrowhead);
+            border: 1px solid #ddd;
+            border-radius: 10px;
         }
         table {
             width: 100%;
@@ -114,49 +100,26 @@
         <div class="section">
             <h1>a) Tên của mẫu kiến trúc được chọn</h1>
             <p><strong>Mẫu kiến trúc:</strong> <span class="highlight">Kiến trúc Client-Server phân tầng (Layered Client-Server Architecture)</span></p>
-            <p><strong>Mô tả chi tiết:</strong> Đây là một kiến trúc Client-Server cơ bản với các tầng: tầng giao diện (Presentation Layer) do Client đảm nhiệm, tầng nghiệp vụ (Business Logic Layer) và tầng dữ liệu (Data Layer) do Server xử lý. Client (React) giao tiếp trực tiếp với Backend Services (Spring Boot) qua giao thức HTTP/REST mà không cần API Gateway trung gian. Dữ liệu được lưu trữ tập trung trong Database (SQL Server) thay vì sử dụng Cloud Storage riêng biệt.</p>
-            <p><strong>Lý do chọn:</strong> Phù hợp với hệ thống quản lý học tập trực tuyến đơn giản, giảm độ phức tạp bằng cách loại bỏ API Gateway và Cloud Storage, tập trung vào hiệu suất và tích hợp chặt chẽ giữa React, Spring Boot, và SQL Server.</p>
+            <p><strong>Mô tả chi tiết:</strong> Đây là kiến trúc Client-Server với các tầng: tầng giao diện (Client: React, Tailwind CSS, TypeScript), tầng nghiệp vụ (Backend: Spring Boot API với Controller, Service, Repository), và tầng dữ liệu (Database: SQL Server). Client giao tiếp với Backend qua REST API sử dụng HTTP, với xác thực JWT. Backend xử lý logic nghiệp vụ và truy xuất dữ liệu từ SQL Server qua JPA/Hibernate.</p>
+            <p><strong>Lý do chọn:</strong> Phù hợp với hệ thống quản lý học tập trực tuyến, đảm bảo tính đơn giản, tích hợp chặt chẽ giữa React và Spring Boot, hỗ trợ xác thực an toàn qua JWT và lưu trữ dữ liệu quan hệ hiệu quả trong SQL Server.</p>
         </div>
 
         <!-- Phần b: Biểu đồ kiến trúc -->
         <div class="section">
             <h1>b) Biểu đồ mô tả kiến trúc</h1>
             <div class="diagram">
-                <svg width="700" height="250">
-                    <defs>
-                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
-                            <polygon points="0 0, 10 3.5, 0 7" fill="#7f8c8d" />
-                        </marker>
-                    </defs>
-                    <!-- Client -->
-                    <rect x="50" y="100" width="150" height="80" rx="10" class="component-box" />
-                    <text x="125" y="140" text-anchor="middle" class="component-text">Client (React)</text>
-                    <!-- Backend Services -->
-                    <rect x="250" y="100" width="150" height="80" rx="10" class="component-box" />
-                    <text x="325" y="140" text-anchor="middle" class="component-text">Backend Services</text>
-                    <!-- Database -->
-                    <rect x="450" y="100" width="150" height="80" rx="10" class="component-box" />
-                    <text x="525" y="140" text-anchor="middle" class="component-text">Database (SQL Server)</text>
-                    <!-- AI Services -->
-                    <rect x="250" y="200" width="150" height="60" rx="10" class="component-box" />
-                    <text x="325" y="230" text-anchor="middle" class="component-text">AI Services</text>
-                    <!-- Arrows -->
-                    <path d="M200 140 H250" class="arrow" />
-                    <path d="M400 140 H450" class="arrow" />
-                    <path d="M325 180 V200" class="arrow" />
-                </svg>
+                <img src="images.svg" alt="Client-Server Architecture Diagram" />
             </div>
-            <p><em>Ghi chú: Các mũi tên thể hiện luồng dữ liệu hai chiều giữa Client và Backend Services, cũng như giữa Backend Services với Database và AI Services.</em></p>
+            <p><em>Ghi chú: Biểu đồ thể hiện luồng dữ liệu giữa Client (React App), Backend (Spring Boot API), và Database (SQL Server). Client gửi yêu cầu HTTP đến API Controller, Backend xử lý qua các tầng (Controller, Service, Repository) và tương tác với Database. Xác thực được quản lý qua JWT. Các mũi tên biểu thị luồng yêu cầu và phản hồi.</em></p>
         </div>
 
         <!-- Phần c: Danh sách thành phần -->
         <div class="section">
             <h1>c) Danh sách các thành phần trong kiến trúc</h1>
             <ul>
-                <li><strong>Client (Frontend)</strong></li>
-                <li><strong>Backend Services</strong></li>
-                <li><strong>Database</strong></li>
-                <li><strong>AI Services</strong></li>
+                <li><strong>Client (React App)</strong>: Bao gồm Browser (User), React App, Axios (HTTP Requests), Router, Tailwind CSS, State Manager, TypeScript.</li>
+                <li><strong>Backend (Spring Boot API)</strong>: Bao gồm API Controller, Service Layer, Repository Layer, Security (JWT), Exception Handler, DTO Mapper.</li>
+                <li><strong>Database (SQL Server)</strong>: Bao gồm SQL Server DB, SQL Tables.</li>
             </ul>
         </div>
 
@@ -169,138 +132,165 @@
                     <th>Chức năng chi tiết</th>
                 </tr>
                 <tr>
-                    <td>Client (Frontend)</td>
+                    <td>Browser (User)</td>
                     <td>
                         <ul>
-                            <li><strong>Quản lý người dùng:</strong> Hiển thị form đăng ký (email, mật khẩu, tên, số điện thoại) với validation (email: regex kiểm tra định dạng, mật khẩu: tối thiểu 8 ký tự, có chữ cái và số); gửi POST request trực tiếp đến Backend Services (/api/users/register). Form đăng nhập yêu cầu email/mật khẩu, gửi POST request (/api/users/login), nhận JWT và lưu vào localStorage để xác thực các request sau.</li>
-                            <li><strong>Quản lý khóa học:</strong> Hiển thị danh sách khóa học dưới dạng card (tên, mô tả ngắn, thời lượng), click vào card mở modal chi tiết (giáo viên, lịch học, số học viên); gửi GET request (/api/courses) để lấy dữ liệu từ Backend Services.</li>
-                            <li><strong>Quản lý tài liệu:</strong> Hiển thị danh sách tài liệu (PDF, video) trong tab khóa học/lớp học, nút tải xuống gửi GET request (/api/documents/{id}) để lấy file trực tiếp từ Backend Services (lưu trong Database dưới dạng BLOB).</li>
-                            <li><strong>Quản lý lớp học:</strong> Hiển thị bảng lớp học (tên, trạng thái: đang diễn ra/đã kết thúc, số học viên), chi tiết lớp (danh sách học viên, giáo viên) trong accordion; gửi GET request (/api/classes).</li>
-                            <li><strong>Quản lý buổi học:</strong> Hiển thị lịch buổi học (ngày, giờ, trạng thái) trong calendar view; giao diện điểm danh (checkbox danh sách học viên) và textarea nhận xét cho giáo viên, gửi POST request (/api/sessions/{id}/attendance).</li>
-                            <li><strong>Quản lý bài tập:</strong> Hiển thị danh sách bài tập (trắc nghiệm: radio buttons, tự luận: textarea/upload file), đồng hồ đếm ngược thời hạn nộp bài; gửi POST request (/api/assignments/{id}/submit) kèm file hoặc câu trả lời.</li>
-                            <li><strong>Quản lý kết quả học tập:</strong> Hiển thị bảng điểm (bài tập, kiểm tra) và biểu đồ cột (tiến độ theo tuần/tháng); gửi GET request (/api/results/student/{id}).</li>
-                            <li><strong>Quản lý nhận xét:</strong> Hiển thị form nhận xét (textarea, nút gửi) cho giáo viên, danh sách nhận xét (có nút phản hồi) cho học viên; gửi POST request (/api/comments).</li>
-                            <li><strong>Quản lý trang Feed:</strong> Hiển thị thông báo hệ thống (toast notification), cập nhật khóa học/lớp học trong timeline; gửi GET request (/api/feed) để lấy dữ liệu real-time.</li>
-                            <li><strong>Quản lý chứng chỉ:</strong> Hiển thị nút tải chứng chỉ (PDF) khi hoàn thành khóa học; gửi GET request (/api/certificates/{id}) để lấy file từ Backend Services.</li>
-                            <li><strong>Chức năng học viên:</strong> Giao diện bài kiểm tra đầu vào (trắc nghiệm với timer 30 phút, câu hỏi random từ ngân hàng đề), kết quả và lộ trình gợi ý hiển thị trong dashboard; gửi POST request (/api/assessments/submit).</li>
-                            <li><strong>Chức năng giáo viên:</strong> Form upload tài liệu (drag-and-drop, giới hạn 50MB), form tạo bài tập (trắc nghiệm: nhập câu hỏi/đáp án, tự luận: nhập đề), bảng điểm danh; gửi POST request (/api/documents, /api/assignments).</li>
+                            <li>Hiển thị giao diện người dùng (UI) của React App trên trình duyệt (Chrome, Firefox, v.v.).</li>
+                            <li>Cho phép người dùng tương tác (nhấp nút, nhập biểu mẫu, chuyển trang).</li>
+                            <li>Gửi hành động người dùng đến React App để xử lý.</li>
                         </ul>
                     </td>
                 </tr>
                 <tr>
-                    <td>Backend Services</td>
+                    <td>React App</td>
                     <td>
                         <ul>
-                            <li><strong>Quản lý người dùng:</strong>
-                                <ul class="sub-list">
-                                    <li>Đăng ký: Nhận POST /api/users/register (email, mật khẩu, tên, số điện thoại), băm mật khẩu bằng BCrypt, kiểm tra email duy nhất (SELECT COUNT(*) FROM users WHERE email=?), lưu vào Database, trả về user_id.</li>
-                                    <li>Đăng nhập: Nhận POST /api/users/login, so sánh mật khẩu băm, tạo JWT (header: alg=HS256, payload: user_id, role, exp=24h), trả về token.</li>
-                                    <li>Phân quyền: Kiểm tra JWT trong header Authorization cho mỗi request, gán role (ROLE_STUDENT, ROLE_TEACHER, ROLE_ADMIN) từ bảng user_roles.</li>
-                                    <li>Cập nhật: Nhận PUT /api/users/{id}, kiểm tra quyền (chỉ user hoặc admin), cập nhật thông tin (UPDATE users SET name=?, phone=? WHERE id=?).</li>
-                                    <li>Xóa: Nhận DELETE /api/users/{id}, kiểm tra quyền admin, xóa mềm (UPDATE users SET is_deleted=1 WHERE id=?).</li>
-                                </ul>
-                            </li>
-                            <li><strong>Quản lý khóa học:</strong>
-                                <ul class="sub-list">
-                                    <li>Tạo: Nhận POST /api/courses (name, description, duration), lưu vào bảng courses (INSERT INTO courses VALUES (...)), trả về course_id.</li>
-                                    <li>Chỉnh sửa: Nhận PUT /api/courses/{id}, kiểm tra quyền (teacher/admin), cập nhật (UPDATE courses SET name=?, description=? WHERE id=?).</li>
-                                    <li>Xóa: Nhận DELETE /api/courses/{id}, kiểm tra trạng thái (SELECT COUNT(*) FROM classes WHERE course_id=?), xóa mềm nếu không có lớp học liên quan.</li>
-                                    <li>Gán giáo viên: Nhận PATCH /api/courses/{id}/teachers, thêm vào bảng course_teachers (INSERT INTO course_teachers VALUES (course_id, teacher_id)).</li>
-                                </ul>
-                            </li>
-                            <li><strong>Quản lý tài liệu:</strong>
-                                <ul class="sub-list">
-                                    <li>Upload: Nhận POST /api/documents (file, course_id), lưu file dưới dạng BLOB trong bảng documents (INSERT INTO documents (name, content, course_id) VALUES (?, ?, ?)).</li>
-                                    <li>Truy xuất: Nhận GET /api/documents/{id}, lấy dữ liệu BLOB (SELECT content FROM documents WHERE id=?), trả về file qua response stream.</li>
-                                </ul>
-                            </li>
-                            <li><strong>Quản lý lớp học:</strong>
-                                <ul class="sub-list">
-                                    <li>Tổ chức: Nhận POST /api/classes (course_id, student_ids, teacher_id), lưu vào bảng classes, thêm liên kết vào class_students/class_teachers.</li>
-                                    <li>Gán học viên/giáo viên: Nhận PATCH /api/classes/{id}, cập nhật bảng class_students/class_teachers (INSERT/DELETE).</li>
-                                    <li>Lịch học: Nhận GET /api/classes/{id}/schedules, truy vấn bảng schedules (SELECT * WHERE class_id=?).</li>
-                                </ul>
-                            </li>
-                            <li><strong>Quản lý buổi học:</strong>
-                                <ul class="sub-list">
-                                    <li>Lên lịch: Nhận POST /api/sessions (class_id, date, time), lưu vào bảng sessions (INSERT INTO sessions VALUES (...)).</li>
-                                    <li>Theo dõi tiến độ: Nhận PATCH /api/sessions/{id}, cập nhật trạng thái (UPDATE sessions SET status=? WHERE id=?).</li>
-                                    <li>Điểm danh: Nhận POST /api/sessions/{id}/attendance (student_ids), lưu vào bảng attendance (INSERT INTO attendance VALUES (session_id, student_id, 1)).</li>
-                                    <li>Nhận xét: Nhận POST /api/comments (session_id, content), lưu vào bảng comments.</li>
-                                </ul>
-                            </li>
-                            <li><strong>Quản lý bài tập:</strong>
-                                <ul class="sub-list">
-                                    <li>Tạo: Nhận POST /api/assignments (type, content, deadline), lưu vào bảng assignments (trắc nghiệm: JSON câu hỏi/đáp án, tự luận: text).</li>
-                                    <li>Nộp bài: Nhận POST /api/assignments/{id}/submit (student_id, content), lưu vào bảng submissions.</li>
-                                    <li>Chấm điểm: Trắc nghiệm (so sánh đáp án, lưu điểm vào results), tự luận (nhận PATCH /api/submissions/{id} từ giáo viên).</li>
-                                </ul>
-                            </li>
-                            <li><strong>Quản lý kết quả học tập:</strong>
-                                <ul class="sub-list">
-                                    <li>Lưu trữ: Nhận điểm từ bài tập/kiểm tra, lưu vào bảng results (INSERT INTO results VALUES (student_id, assignment_id, score)).</li>
-                                    <li>Báo cáo: Nhận GET /api/results/student/{id}, tính điểm trung bình (SELECT AVG(score) FROM results WHERE student_id=?).</li>
-                                </ul>
-                            </li>
-                            <li><strong>Quản lý nhận xét:</strong>
-                                <ul class="sub-list">
-                                    <li>Lưu: Nhận POST /api/comments (user_id, content, session_id/assignment_id), lưu vào bảng comments.</li>
-                                    <li>Phản hồi: Nhận POST /api/comments (parent_id), liên kết nhận xét gốc.</li>
-                                </ul>
-                            </li>
-                            <li><strong>Quản lý trang Feed:</strong>
-                                <ul class="sub-list">
-                                    <li>Tạo thông báo: Nhận POST /api/feed (content), lưu vào bảng feeds.</li>
-                                    <li>Cập nhật: Nhận GET /api/feed, truy vấn (SELECT * FROM feeds ORDER BY created_at DESC LIMIT 10).</li>
-                                </ul>
-                            </li>
-                            <li><strong>Quản lý chứng chỉ:</strong>
-                                <ul class="sub-list">
-                                    <li>Cấp: Kiểm tra hoàn thành khóa học (SELECT COUNT(*) FROM results WHERE course_id=? AND student_id=?), tạo PDF (iText), lưu BLOB vào bảng certificates.</li>
-                                    <li>Tải: Nhận GET /api/certificates/{id}, trả về file từ Database qua response stream.</li>
-                                </ul>
-                            </li>
-                            <li><strong>Chức năng học viên:</strong>
-                                <ul class="sub-list">
-                                    <li>Đăng ký/đăng nhập: Xử lý trực tiếp qua /api/users/register và /api/users/login.</li>
-                                    <li>Kiểm tra đầu vào: Nhận POST /api/assessments/submit (answers), tính điểm, gửi sang AI Services qua API nội bộ.</li>
-                                </ul>
-                            </li>
-                            <li><strong>Chức năng giáo viên:</strong>
-                                <ul class="sub-list">
-                                    <li>Thao tác tài liệu: Nhận POST /api/documents, lưu file BLOB vào Database.</li>
-                                    <li>Thao tác bài tập: Nhận POST /api/assignments, PATCH /api/submissions/{id} để chấm điểm.</li>
-                                    <li>Thao tác buổi học: Nhận POST /api/sessions/{id}/attendance và /api/comments.</li>
-                                </ul>
-                            </li>
+                            <li>Quản lý giao diện người dùng động bằng React Components, sử dụng hooks (useState, useEffect).</li>
+                            <li>Tích hợp Tailwind CSS (thiết kế responsive), TypeScript (an toàn kiểu), Router (điều hướng), State Manager (quản lý trạng thái).</li>
+                            <li>Gửi yêu cầu HTTP đến API Controller qua Axios (ví dụ: GET /api/users, POST /api/auth/login).</li>
+                            <li>Xử lý phản hồi JSON để cập nhật UI (hiển thị danh sách, biểu mẫu, v.v.).</li>
+                            <li>Lưu trữ JWT token từ Security (JWT) để xác thực các yêu cầu sau.</li>
                         </ul>
                     </td>
                 </tr>
                 <tr>
-                    <td>Database</td>
+                    <td>Axios (HTTP Requests)</td>
                     <td>
                         <ul>
-                            <li><strong>Quản lý người dùng:</strong> Bảng users (id, email, password_hash, name, phone, role, is_deleted), user_roles (user_id, role).</li>
-                            <li><strong>Quản lý khóa học:</strong> Bảng courses (id, name, description, duration, is_deleted), course_teachers (course_id, teacher_id).</li>
-                            <li><strong>Quản lý tài liệu:</strong> Bảng documents (id, name, content BLOB, course_id, uploaded_by, uploaded_at).</li>
-                            <li><strong>Quản lý lớp học:</strong> Bảng classes (id, course_id), class_students (class_id, student_id), class_teachers (class_id, teacher_id), schedules (id, class_id, date, time).</li>
-                            <li><strong>Quản lý buổi học:</strong> Bảng sessions (id, class_id, date, status), attendance (session_id, student_id, present).</li>
-                            <li><strong>Quản lý bài tập:</strong> Bảng assignments (id, type, content JSON/text, deadline), submissions (id, assignment_id, student_id, content BLOB/text, submitted_at).</li>
-                            <li><strong>Quản lý kết quả học tập:</strong> Bảng results (id, student_id, assignment_id, score, created_at).</li>
-                            <li><strong>Quản lý nhận xét:</strong> Bảng comments (id, user_id, content, session_id, assignment_id, parent_id, created_at).</li>
-                            <li><strong>Quản lý trang Feed:</strong> Bảng feeds (id, content, created_at).</li>
-                            <li><strong>Quản lý chứng chỉ:</strong> Bảng certificates (id, student_id, course_id, content BLOB, issued_at).</li>
-                            <li><strong>Tối ưu:</strong> Index trên user_id, course_id, student_id; partition bảng results theo student_id nếu dữ liệu lớn.</li>
+                            <li>Gửi yêu cầu HTTP (GET, POST, PUT, DELETE) đến API Controller (ví dụ: GET /api/users).</li>
+                            <li>Gửi yêu cầu đăng nhập (POST /api/auth/login) và nhận JWT token.</li>
+                            <li>Gắn header Authorization: Bearer &lt;JWT&gt; cho các yêu cầu được bảo vệ.</li>
+                            <li>Nhận phản hồi JSON và chuyển cho React App xử lý.</li>
                         </ul>
                     </td>
                 </tr>
                 <tr>
-                    <td>AI Services</td>
+                    <td>Router</td>
                     <td>
                         <ul>
-                            <li><strong>Chức năng học viên - Kiểm tra đầu vào:</strong> Nhận dữ liệu từ Backend Services qua API nội bộ (POST /ai/assess, body: {student_id, answers}), dùng mô hình ML (KNN hoặc Decision Tree) để phân loại trình độ (A1, A2, B1).</li>
-                            <li><strong>Gợi ý lộ trình:</strong> Trả về JSON ({level: "A1", recommended_courses: [id1, id2]}) cho Backend Services, lưu vào bảng student_paths (student_id, level, course_ids).</li>
-                            <li><strong>Tối ưu hóa:</strong> Train mô hình định kỳ với dữ liệu từ results (SELECT score FROM results WHERE assignment_id IN (kiểm tra đầu vào)), tích hợp Spring AI.</li>
+                            <li>Quản lý điều hướng giữa các trang (React Router): /home, /profile, /courses.</li>
+                            <li>Chuyển đổi trang mà không tải lại ứng dụng (single-page application).</li>
+                            <li>Truyền tham số URL (ví dụ: /users/:id) để hiển thị chi tiết.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tailwind CSS</td>
+                    <td>
+                        <ul>
+                            <li>Cung cấp utility classes (flex, grid, p-4) để thiết kế giao diện responsive.</li>
+                            <li>Đảm bảo UI đẹp, nhất quán trên desktop và mobile.</li>
+                            <li>Tích hợp với React App để định kiểu React Components.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>State Manager</td>
+                    <td>
+                        <ul>
+                            <li>Quản lý trạng thái toàn cục (Redux, Context API): thông tin người dùng, danh sách khóa học.</li>
+                            <li>Cung cấp cơ chế để React Components truy cập/cập nhật trạng thái.</li>
+                            <li>Đồng bộ trạng thái với dữ liệu từ Backend qua Axios.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>TypeScript</td>
+                    <td>
+                        <ul>
+                            <li>Định nghĩa interfaces/types (ví dụ: interface User { id: number; username: string; }).</li>
+                            <li>Kiểm tra kiểu tĩnh, giảm lỗi runtime.</li>
+                            <li>Tích hợp với React App để đảm bảo mã an toàn kiểu.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>API Controller</td>
+                    <td>
+                        <ul>
+                            <li>Định nghĩa REST endpoints (ví dụ: @GetMapping("/api/users"), @PostMapping("/api/courses")).</li>
+                            <li>Nhận yêu cầu HTTP từ Axios, gọi Service Layer để xử lý logic.</li>
+                            <li>Kiểm tra xác thực qua Security (JWT) (header Authorization).</li>
+                            <li>Sử dụng DTO Mapper để chuyển đổi dữ liệu entity sang DTO.</li>
+                            <li>Trả về phản hồi JSON (ví dụ: [{id: 1, username: "john"}, ...]).</li>
+                            <li>Gọi Exception Handler để xử lý lỗi (400, 404, 500).</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Service Layer</td>
+                    <td>
+                        <ul>
+                            <li>Xử lý logic nghiệp vụ (kiểm tra dữ liệu, tính toán, giao dịch).</li>
+                            <li>Gọi Repository Layer để truy xuất/cập nhật dữ liệu.</li>
+                            <li>Sử dụng DTO Mapper để chuyển đổi entity sang DTO và ngược lại.</li>
+                            <li>Đảm bảo quy tắc nghiệp vụ (ví dụ: kiểm tra quyền trước khi xóa).</li>
+                            <li>Trả kết quả (DTO) cho API Controller.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Repository Layer</td>
+                    <td>
+                        <ul>
+                            <li>Tương tác với SQL Server DB qua JPA/Hibernate.</li>
+                            <li>Định nghĩa interface (UserRepository, CourseRepository) với phương thức findAll(), save().</li>
+                            <li>Thực hiện truy vấn SQL/JPQL (ví dụ: SELECT * FROM users).</li>
+                            <li>Chuyển đổi dữ liệu thành entity (User, Course).</li>
+                            <li>Quản lý transaction để đảm bảo toàn vẹn dữ liệu.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Security (JWT)</td>
+                    <td>
+                        <ul>
+                            <li>Xử lý đăng nhập (POST /api/auth/login), tạo JWT token (alg=HS256, payload: user_id, role).</li>
+                            <li>Kiểm tra JWT trong header Authorization cho các yêu cầu bảo vệ.</li>
+                            <li>Phân quyền dựa trên role (ROLE_STUDENT, ROLE_TEACHER) với @PreAuthorize.</li>
+                            <li>Bảo vệ endpoint nhạy cảm (ví dụ: DELETE /api/users/{id} chỉ dành cho admin).</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Exception Handler</td>
+                    <td>
+                        <ul>
+                            <li>Bắt ngoại lệ (NullPointerException, ResourceNotFoundException) bằng @ControllerAdvice.</li>
+                            <li>Trả mã lỗi HTTP (400, 404, 500) và JSON ({ "error": "User not found" }).</li>
+                            <li>Đảm bảo ứng dụng không crash và cung cấp thông tin lỗi rõ ràng.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>DTO Mapper</td>
+                    <td>
+                        <ul>
+                            <li>Chuyển đổi entity (User) sang DTO (UserDTO), loại bỏ dữ liệu nhạy cảm (password).</li>
+                            <li>Chuyển DTO từ client thành entity để lưu vào Database.</li>
+                            <li>Sử dụng MapStruct hoặc thủ công để ánh xạ dữ liệu.</li>
+                            <li>Tối ưu dữ liệu truyền tải qua API.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>SQL Server DB</td>
+                    <td>
+                        <ul>
+                            <li>Lưu trữ dữ liệu quan hệ trong các bảng (Users, Courses, Sessions).</li>
+                            <li>Hỗ trợ truy vấn SQL/JPA từ Repository Layer.</li>
+                            <li>Đảm bảo toàn vẹn dữ liệu qua PK, FK, unique constraints.</li>
+                            <li>Cung cấp dữ liệu khi Repository thực hiện truy vấn.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>SQL Tables</td>
+                    <td>
+                        <ul>
+                            <li>Lưu trữ dữ liệu cụ thể: Users (id, username, email), Courses (id, name, duration).</li>
+                            <li>Hỗ trợ CRUD qua Repository Layer.</li>
+                            <li>Đảm bảo mối quan hệ (FK: user_id trong Sessions liên kết với Users).</li>
                         </ul>
                     </td>
                 </tr>
@@ -318,33 +308,28 @@
                 </tr>
                 <tr>
                     <td>Client (Frontend)</td>
-                    <td>React, Tailwind CSS</td>
-                    <td>React: UI động, tái sử dụng component. Tailwind: CSS nhanh, responsive.</td>
+                    <td>React, Tailwind CSS, TypeScript, Axios, React Router, Redux/Context API</td>
+                    <td>React: UI động, tái sử dụng component. Tailwind: Thiết kế nhanh, responsive. TypeScript: An toàn kiểu. Axios: Gọi API dễ dàng. React Router: Điều hướng SPA. Redux/Context: Quản lý trạng thái.</td>
                 </tr>
                 <tr>
                     <td>Backend Services</td>
-                    <td>Spring Boot, Spring System</td>
-                    <td>Spring Boot: Xử lý logic nghiệp vụ, REST API. Spring System: Quản lý hệ thống.</td>
+                    <td>Spring Boot, Spring Security, Spring Data JPA, MapStruct</td>
+                    <td>Spring Boot: REST API, logic nghiệp vụ. Spring Security: Xác thực JWT. Spring Data JPA: Truy xuất Database. MapStruct: Ánh xạ DTO.</td>
                 </tr>
                 <tr>
                     <td>Database</td>
                     <td>SQL Server</td>
-                    <td>Cơ sở dữ liệu quan hệ, truy vấn nhanh, tích hợp tốt với Spring.</td>
-                </tr>
-                <tr>
-                    <td>AI Services</td>
-                    <td>Spring AI</td>
-                    <td>Tích hợp AI vào Spring, hỗ trợ ML đơn giản.</td>
+                    <td>Cơ sở dữ liệu quan hệ, truy vấn nhanh, tích hợp tốt với Spring Data JPA.</td>
                 </tr>
                 <tr>
                     <td>Công cụ hỗ trợ</td>
-                    <td>Trello, Postman</td>
-                    <td>Trello: Quản lý dự án. Postman: Test API.</td>
+                    <td>Postman, VS Code, IntelliJ IDEA</td>
+                    <td>Postman: Test API. VS Code: Phát triển frontend. IntelliJ: Phát triển backend.</td>
                 </tr>
                 <tr>
                     <td>Phần cứng</td>
                     <td>Server vật lý hoặc VM (Docker)</td>
-                    <td>Triển khai ứng dụng linh hoạt, tối ưu tài nguyên.</td>
+                    <td>Triển khai linh hoạt, tối ưu tài nguyên.</td>
                 </tr>
             </table>
         </div>
