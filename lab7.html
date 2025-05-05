@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Performance Test Prototype, Check Grammar and Suggest</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            background-color: #3498db;
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        h3 {
+            color: #2980b9;
+        }
+        .section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        ul, ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .highlight {
+            background-color: #ecf0f1;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #status {
+            margin-top: 10px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Performance Test Prototype</h1>
+    <h3>Check Grammar and Suggest</h3>
+    <div class="section">
+        <h2>Test Configuration</h2>
+        <div class="input-group">
+            <label for="numRequests">Number of Requests:</label>
+            <input type="number" id="numRequests" value="5" min="1">
+        </div>
+        <div class="input-group">
+            <label for="jwtToken">JWT Token:</label>
+            <input type="text" id="jwtToken" placeholder="Enter your JWT token">
+        </div>
+        <button onclick="startTest()">Start Test</button>
+        <p id="status"></p>
+    </div>
+    <div class="section" id="summary" style="display: none;">
+        <h2>Test Summary</h2>
+        <table>
+            <tr><th>Metric</th><th>Value</th></tr>
+            <tr><td>Total Requests</td><td id="totalRequests"></td></tr>
+            <tr><td>Successful Requests</td><td id="successCount"></td></tr>
+            <tr><td>Failed Requests</td><td id="failureCount"></td></tr>
+            <tr><td>Total Duration (seconds)</td><td id="totalDuration"></td></tr>
+            <tr><td>Average Duration per Success (ms)</td><td id="averageDuration"></td></tr>
+        </table>
+    </div>
+    <div class="section" id="details" style="display: none;">
+        <h2>Detailed Results</h2>
+        <table>
+            <thead>
+                <tr><th>Request #</th><th>Status</th><th>Duration (ms)</th><th>Details</th></tr>
+            </thead>
+            <tbody id="detailsTable"></tbody>
+        </table>
+    </div>
+
+    <script>
+        // Define the API client prototype
+        function ApiClient(token) {
+            this.baseUrl = 'http://localhost:8080/api/v1';
+            this.token = token;
+            // Predefine fetch options for reuse
+            this.fetchOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                keepalive: true,
+            };
+        }
+
+        // Method to submit a single answer
+        ApiClient.prototype.submitAnswer = async function(answerId, content, requestIndex) {
+            const startTime = performance.now();
+            try {
+                const response = await fetch(`${this.baseUrl}/answer/${answerId}/submit`, {
+                    ...this.fetchOptions,
+                    body: JSON.stringify({ content }),
+                });
+
+                const duration = performance.now() - startTime;
+                console.log(`Request ${requestIndex}: ${duration.toFixed(2)} ms`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                return { success: true, duration, data, requestIndex };
+            } catch (error) {
+                const duration = performance.now() - startTime;
+                console.log(`Request ${requestIndex} failed: ${duration.toFixed(2)} ms, Error: ${error.message}`);
+                return { success: false, duration, error: error.message, requestIndex };
+            }
+        };
+
+        // Method to test performance with n requests in chunks
+        ApiClient.prototype.testPerformance = async function(answerId, content, n) {
+            updateStatus(`Starting ${n} requests (in chunks of 3)...`);
+            
+            const results = [];
+            const chunkSize = 3; // Limit concurrent requests to avoid server contention
+            for (let i = 0; i < n; i += chunkSize) {
+                const chunk = Array.from({ length: Math.min(chunkSize, n - i) }, (_, j) => 
+                    this.submitAnswer(answerId, content, i + j + 1)
+                );
+                const chunkResults = await Promise.all(chunk);
+                results.push(...chunkResults);
+            }
+            
+            // Calculate statistics
+            const successCount = results.filter(r => r.success).length;
+            const totalDuration = results.reduce((sum, r) => sum + r.duration, 0);
+            const averageDuration = successCount > 0 ? (totalDuration / successCount).toFixed(2) : 0;
+
+            return {
+                totalRequests: n,
+                successCount,
+                failureCount: n - successCount,
+                totalDuration,
+                averageDuration,
+                results
+            };
+        };
+
+        // UI update functions
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+
+        function displayResults(testResults) {
+            // Update summary
+            document.getElementById('totalRequests').textContent = testResults.totalRequests;
+            document.getElementById('successCount').textContent = testResults.successCount;
+            document.getElementById('failureCount').textContent = testResults.failureCount;
+            document.getElementById('totalDuration').textContent = (testResults.totalDuration / 1000).toFixed(2);
+            document.getElementById('averageDuration').textContent = testResults.averageDuration;
+            document.getElementById('summary').style.display = 'block';
+
+            // Update detailed results
+            const detailsTable = document.getElementById('detailsTable');
+            detailsTable.innerHTML = '';
+            testResults.results.forEach(result => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${result.requestIndex}</td>
+                    <td>${result.success ? 'Success' : 'Failed'}</td>
+                    <td>${result.success ? result.duration.toFixed(2) : '-'}</td>
+                    <td>${result.success ? 'OK' : result.error}</td>
+                `;
+                detailsTable.appendChild(row);
+            });
+            document.getElementById('details').style.display = 'block';
+        }
+
+        // Start test function
+        async function startTest() {
+            const numRequests = parseInt(document.getElementById('numRequests').value);
+            const jwtToken = document.getElementById('jwtToken').value.trim();
+
+            if (!numRequests || numRequests < 1) {
+                updateStatus('Please enter a valid number of requests.');
+                return;
+            }
+            if (!jwtToken) {
+                updateStatus('Please enter a JWT token.');
+                return;
+            }
+
+            updateStatus('Starting performance test...');
+            const apiClient = new ApiClient(jwtToken);
+            try {
+                const testResults = await apiClient.testPerformance(1, "He dont no were their going tomorow", numRequests);
+                displayResults(testResults);
+                updateStatus('Test completed.');
+            } catch (error) {
+                updateStatus(`Test failed: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html>
