@@ -35,12 +35,16 @@ body {
     margin: 5px 0;
     font-size: 16px;
 }
-h2 {
+h2, h3 {
     color: #2c3e50;
     border-bottom: 2px solid #3498db;
     padding-bottom: 8px;
     margin-top: 35px;
     font-size: 24px;
+}
+h3 {
+    font-size: 20px;
+    margin-top: 25px;
 }
 table {
     width: 100%;
@@ -130,11 +134,32 @@ tr:hover {
 <body>
     <div class="header">
         <h1>Báo cáo: Hệ thống học tiếng Anh trực tuyến và LMS</h1>
+        <p>Phiên bản 1.0 - Ngày 05/05/2025</p>
     </div>
 
-    <div class="container">
-        <!-- Giới thiệu và Chức năng chính giữ nguyên -->
+    <div class="container"> 
         <h2>Giới thiệu</h2>
+        <p>
+            Tài liệu này cung cấp cái nhìn tổng quan về kiến trúc của Hệ thống học tiếng Anh trực tuyến và Hệ thống Quản lý Học tập (LMS) do ABC-ENGLISH phát triển. Hệ thống hỗ trợ học tiếng Anh trực tuyến, quản lý khóa học, lớp học, bài tập, và cấp chứng chỉ cho học viên. Tài liệu sử dụng các góc nhìn kiến trúc khác nhau (Use Case View, Logical View, Process View, Deployment View) để mô tả các quyết định kiến trúc quan trọng.
+        </p>
+
+        <h2>Mục tiêu và Ràng buộc Kiến trúc (Architectural Goals and Constraints)</h2>
+        <div class="process-section">
+            <p>Các yêu cầu chính và ràng buộc hệ thống có ảnh hưởng đáng kể đến kiến trúc bao gồm:</p>
+            <ul>
+                <li><strong>Tích hợp với hệ thống bên ngoài:</strong> Hệ thống phải tích hợp với các dịch vụ cloud (AWS S3) để lưu trữ tài liệu và các công cụ họp trực tuyến (Zoom, Google Meet) để hỗ trợ học trực tuyến.</li>
+                <li><strong>Hỗ trợ đa nền tảng:</strong> Chức năng của học viên, giáo viên và quản trị viên phải có thể truy cập từ PC cục bộ và thiết bị từ xa qua kết nối Internet, sử dụng trình duyệt web hiện đại.</li>
+                <li><strong>Bảo mật:</strong> Hệ thống sử dụng JSON Web Token (JWT) để xác thực và mã hóa mật khẩu bằng BCrypt để đảm bảo bảo mật dữ liệu người dùng. Tất cả truy cập từ xa đều yêu cầu xác thực qua email và mật khẩu.</li>
+                <li><strong>Kiến trúc Client-Server:</strong> Hệ thống được triển khai dưới dạng kiến trúc client-server, với client chạy trên trình duyệt web và server chạy trên máy chủ đám mây (Docker), đảm bảo khả năng mở rộng.</li>
+                <li><strong>Khả năng mở rộng:</strong> Hệ thống phải dễ dàng mở rộng để thêm các loại nội dung học tập mới (ví dụ: bài kiểm tra tương tác, video 360 độ) với tác động tối thiểu đến hệ thống hiện tại.</li>
+                <li><strong>Hiệu suất:</strong> Hệ thống phải đáp ứng các yêu cầu về hiệu suất và tải, bao gồm hỗ trợ 1000 người dùng đồng thời và độ trễ truy cập cơ sở dữ liệu dưới 10 giây.</li>
+                <li><strong>Giao diện người dùng:</strong> Hệ thống cung cấp giao diện đồ họa thân thiện, tuân thủ tiêu chuẩn UX/UI hiện đại, hỗ trợ đa ngôn ngữ (tiếng Anh, tiếng Việt).</li>
+            </ul>
+            <div class="diagram-container">
+                <h3>Biểu đồ Mục tiêu Kiến trúc</h3>
+                <img src="al.svg" alt="Architectural Goals Diagram" />
+            </div>
+        </div>
 
         <h2>Chức năng chính của hệ thống</h2>
         <table>
@@ -240,127 +265,288 @@ tr:hover {
             </tr>
         </table>
 
-        <h2>Luồng xử lý (Process View)</h2>
-        <p>Phần này mô tả chi tiết các tiến trình chính của Hệ thống học tiếng Anh trực tuyến và LMS, cách chúng tương tác với nhau, và cách chúng ánh xạ đến các chức năng của hệ thống. Mỗi tiến trình được thiết kế để đảm bảo hiệu suất cao, bảo mật, và khả năng mở rộng, với mục tiêu hỗ trợ tối đa 1000 người dùng đồng thời mà không ảnh hưởng đến trải nghiệm người dùng.</p>
-        
-        <div class="process-section">
-            <ul>
-                <li>
-                    <strong>Tiến trình xác thực người dùng (UserAuthenticationProcess)</strong><br>
-                    Quản lý xác thực người dùng bằng JSON Web Token (JWT). Tiến trình này đảm bảo rằng chỉ những người dùng hợp lệ mới có thể truy cập hệ thống, đồng thời bảo vệ dữ liệu nhạy cảm.<br>
-                    <strong>Phương thức:</strong><br>
-                    - <code>đăng nhập()</code>: Xác thực thông tin đăng nhập (email, mật khẩu), tạo và trả về JWT token cho client, với thời hạn token là 24 giờ.<br>
-                    - <code>đăng ký()</code>: Tạo tài khoản mới, mã hóa mật khẩu bằng BCrypt, và lưu thông tin vào cơ sở dữ liệu, đồng thời gửi email xác nhận cho người dùng.<br>
-                    <strong>Tương tác:</strong> Tiến trình này là bước đầu tiên, cung cấp token cho các tiến trình khác để xác thực yêu cầu. Nó cũng tích hợp với hệ thống phân quyền để gán vai trò (học viên, giáo viên, quản trị viên).<br>
-                    <strong>Hiệu suất:</strong> Được tối ưu hóa để xử lý 500 yêu cầu xác thực mỗi giây.
-                </li>
-                <li>
-                    <strong>Tiến trình quản lý khóa học (CourseManagementProcess)</strong><br>
-                    Quản lý toàn bộ vòng đời của khóa học, từ tạo mới, cập nhật, đến xóa bỏ, đảm bảo tính nhất quán của dữ liệu.<br>
-                    <strong>Phương thức:</strong><br>
-                    - <code>tạo khóa học()</code>: Tạo khóa học mới với thông tin (tên, mô tả, thời lượng, giáo viên), lưu vào cơ sở dữ liệu, và gửi thông báo đến trang Feed.<br>
-                    - <code>cập nhật khóa học()</code>: Cập nhật thông tin khóa học, đảm bảo không ảnh hưởng đến các lớp học đang diễn ra, với cơ chế kiểm tra xung đột lịch học.<br>
-                    - <code>xóa khóa học()</code>: Xóa khóa học, kiểm tra điều kiện (không có lớp học đang hoạt động), và lưu trữ lịch sử xóa để phục hồi nếu cần.<br>
-                    <strong>Tương tác:</strong> Cung cấp dữ liệu khóa học cho Tiến trình đăng ký của học viên và Tiến trình quản lý lớp học.<br>
-                    <strong>Bảo mật:</strong> Chỉ quản trị viên và giáo viên được phân quyền mới có thể thực hiện các thao tác này.
-                </li>
-                <li>
-                    <strong>Tiến trình đăng ký của học viên (StudentRegistrationProcess)</strong><br>
-                    Xử lý đăng ký khóa học và bài kiểm tra đầu vào, đảm bảo học viên được gán vào lộ trình học phù hợp dựa trên trình độ.<br>
-                    <strong>Phương thức:</strong><br>
-                    - <code>đăng ký khóa học()</code>: Đăng ký học viên vào khóa học, kiểm tra điều kiện (số lượng học viên tối đa, thời gian đăng ký), và gửi thông báo xác nhận.<br>
-                    - <code>làm bài kiểm tra đầu vào()</code>: Tạo bài kiểm tra trắc nghiệm (30 câu, 45 phút), chấm điểm tự động, gợi ý lộ trình học (A1, A2, B1, v.v.) dựa trên điểm số.<br>
-                    - <code>lấy thông tin học viên()</code>: Truy xuất thông tin học viên (tên, email, tiến độ học tập, lịch sử đăng ký) để hiển thị trên giao diện người dùng.<br>
-                    <strong>Tương tác:</strong> Kết nối với Tiến trình quản lý bài tập và Tiến trình quản lý buổi học để quản lý hoạt động của học viên, đồng thời gửi thông tin đến Hệ thống thông báo.<br>
-                    <strong>Mở rộng:</strong> Hỗ trợ tích hợp với hệ thống thanh toán để xử lý học phí trong tương lai.
-                </li>
-                <li>
-                    <strong>Tiến trình quản lý bài tập (AssignmentManagementProcess)</strong><br>
-                    Quản lý việc tạo, nộp, và chấm điểm bài tập, hỗ trợ cả bài trắc nghiệm và tự luận, với mục tiêu tối ưu hóa trải nghiệm học tập.<br>
-                    <strong>Phương thức:</strong><br>
-                    - <code>tạo bài tập()</code>: Tạo bài tập mới (trắc nghiệm/tự luận), đặt thời hạn nộp bài, gán cho lớp học, và hỗ trợ đính kèm tài liệu hướng dẫn.<br>
-                    - <code>nộp bài tập()</code>: Cho phép học viên nộp bài, lưu trữ bài nộp trên hệ thống (hỗ trợ file PDF, Word), và gửi thông báo cho giáo viên.<br>
-                    - <code>chấm bài tập()</code>: Chấm điểm tự động (trắc nghiệm) hoặc thủ công (tự luận), gửi phản hồi chi tiết cho học viên, và lưu kết quả vào cơ sở dữ liệu.<br>
-                    <strong>Tương tác:</strong> Giao tiếp với Tiến trình quản lý buổi học để đồng bộ bài tập với lịch học, và với Hệ thống thông báo để gửi thông báo nộp bài hoặc kết quả chấm điểm.<br>
-                    <strong>Hiệu suất:</strong> Hỗ trợ chấm điểm tự động cho 1000 bài trắc nghiệm trong vòng 5 phút.
-                </li>
-                <li>
-                    <strong>Tiến trình quản lý buổi học (SessionManagementProcess)</strong><br>
-                    Quản lý các buổi học, bao gồm lịch học, điểm danh, và nhận xét, nhằm đảm bảo tiến độ học tập được theo dõi chặt chẽ.<br>
-                    <strong>Phương thức:</strong><br>
-                    - <code>tạo buổi học()</code>: Lên lịch buổi học mới, gán giáo viên và lớp học, gửi thông báo cho học viên qua email và trang Feed.<br>
-                    - <code>điểm danh()</code>: Ghi nhận điểm danh học viên, cập nhật trạng thái (có mặt, vắng mặt), và lưu lịch sử điểm danh.<br>
-                    - <code>thêm nhận xét()</code>: Thêm nhận xét của giáo viên cho từng học viên sau buổi học, hỗ trợ định dạng văn bản phong phú (in đậm, gạch đầu dòng).<br>
-                    <strong>Tương tác:</strong> Kết nối với Tiến trình cấp chứng chỉ để cung cấp dữ liệu điểm danh và nhận xét, và với Hệ thống thông báo để gửi nhắc nhở lịch học.<br>
-                    <strong>Bảo mật:</strong> Chỉ giáo viên được phân quyền mới có thể thực hiện điểm danh và thêm nhận xét.
-                </li>
-            </ul>
+        <h2>Góc nhìn logic (Logical View)</h2>
+        <p>Phần này mô tả góc nhìn logic của kiến trúc, bao gồm các lớp quan trọng, tổ chức trong các gói dịch vụ và phân hệ, và cách các phân hệ được phân tầng.</p>
 
-            <div class="diagram-description">
-                <h3>Mô tả biểu đồ tiến trình</h3>
-                <p>Biểu đồ tiến trình thể hiện sự tương tác giữa các tiến trình trong hệ thống LMS, được thiết kế để tối ưu hóa hiệu suất, bảo mật, và khả năng mở rộng:</p>
-                <ul>
-                    <li><strong>Tiến trình xác thực người dùng</strong>: Là điểm khởi đầu, cung cấp JWT cho tất cả các tiến trình khác để đảm bảo truy cập an toàn. Tiến trình này sử dụng cơ chế mã hóa BCrypt cho mật khẩu và JWT cho xác thực, với thời gian xử lý trung bình 50ms mỗi yêu cầu.</li>
-                    <li><strong>Tiến trình quản lý khóa học</strong>: Tương tác với Tiến trình đăng ký của học viên để cung cấp dữ liệu khóa học, đảm bảo học viên chỉ đăng ký vào các khóa học hợp lệ. Dữ liệu khóa học được lưu trữ trên cơ sở dữ liệu quan hệ (MySQL) với các bảng liên quan (Courses, Teachers, Classes).</li>
-                    <li><strong>Tiến trình đăng ký của học viên</strong>: Liên kết với Tiến trình quản lý bài tập và Tiến trình quản lý buổi học để quản lý toàn bộ hoạt động của học viên trong hệ thống. Tiến trình này cũng tích hợp với bài kiểm tra đầu vào để phân loại trình độ học viên (A1, A2, B1, v.v.) dựa trên tiêu chuẩn CEFR.</li>
-                    <li><strong>Tiến trình quản lý bài tập</strong>: Giao tiếp với Tiến trình quản lý buổi học để đồng bộ bài tập với lịch học, và với Hệ thống thông báo để gửi thông báo nộp bài. Hệ thống hỗ trợ lưu trữ bài nộp trên cloud (AWS S3) để đảm bảo khả năng mở rộng.</li>
-                    <li><strong>Tiến trình quản lý buổi học</strong>: Quản lý lịch học và điểm danh, với khả năng tích hợp với công cụ họp trực tuyến (Zoom, Google Meet) để hỗ trợ học trực tuyến. Dữ liệu điểm danh được sử dụng để tính toán điều kiện cấp chứng chỉ.</li>
-                    <li><strong>Hệ thống thông báo</strong>: Đóng vai trò proxy, nhận yêu cầu từ các tiến trình khác để gửi thông báo qua email, trang Feed, hoặc ứng dụng di động (trong tương lai). Hệ thống này sử dụng hàng đợi (RabbitMQ) để xử lý thông báo không đồng bộ.</li>
-                </ul>
-                <p><strong>Cấu trúc biểu đồ:</strong> Mỗi tiến trình được biểu diễn bằng một hộp với nhãn "Tiến trình". Các mũi tên biểu thị sự tương tác, với số "1" để chỉ một instance duy nhất. Các proxy hệ thống con (như Hệ thống thông báo) được hiển thị bằng các hộp riêng với các phương thức như <code>gửi thông báo()</code>. Biểu đồ được thiết kế để tránh chồng lấn, với các hộp được sắp xếp theo luồng logic từ trái sang phải và từ trên xuống dưới.</p>
+        <h3>5.1 Tổng quan kiến trúc – Phân tầng gói và phân hệ</h3>
+        <div class="process-section">
+            <p>Góc nhìn logic của hệ thống học tiếng Anh trực tuyến bao gồm 3 gói chính: Giao diện người dùng (User Interface), Dịch vụ nghiệp vụ (Business Services), và Đối tượng nghiệp vụ (Business Objects).</p>
+            <ul>
+                <li><strong>Gói Giao diện người dùng:</strong> Chứa các lớp biên (boundary classes) cho các biểu mẫu mà học viên, giáo viên, và quản trị viên sử dụng, hỗ trợ đăng nhập, quản lý khóa học, bài tập, buổi học, và chứng chỉ.</li>
+                <li><strong>Gói Dịch vụ nghiệp vụ:</strong> Chứa các lớp điều khiển (control classes) để quản lý xác thực người dùng, đăng ký khóa học, quản lý bài tập, và cấp chứng chỉ.</li>
+                <li><strong>Gói Đối tượng nghiệp vụ:</strong> Bao gồm các lớp thực thể (entity classes) như Course, Class, Assignment, Certificate, và các lớp biên để giao tiếp với AWS S3 và công cụ họp trực tuyến.</li>
+            </ul>
+            <div class="diagram-container">
+                <h3>Biểu đồ phân tầng gói và phân hệ</h3>
+                <img src="5.1.svg" alt="Package and Subsystem Layering Diagram" />
             </div>
         </div>
 
-        <!-- Biểu đồ tiến trình bằng hình ảnh SVG -->
-        <div class="diagram-container">
-            <h2>Biểu đồ tiến trình (Process Diagram)</h2>
-            <img src="b3.svg" alt="Process Diagram of LMS System" />
+        <h3>5.1.1 Tầng ứng dụng (Application Layer)</h3>
+        <div class="process-section">
+            <p>Tầng ứng dụng chứa các lớp biên đại diện cho giao diện người dùng trên trình duyệt web, phụ thuộc vào tầng Dịch vụ nghiệp vụ.</p>
+            <div class="diagram-container">
+                <h3>Biểu đồ tầng ứng dụng</h3>
+                <img src="5.1.1.svg" alt="Application Layer Diagram" />
+            </div>
         </div>
 
-        <!-- Phần Size and Performance -->
+        <h3>5.1.2 Tầng dịch vụ nghiệp vụ (Business Services Layer)</h3>
+        <div class="process-section">
+            <p>Tầng dịch vụ nghiệp vụ chứa các lớp điều khiển để quản lý luồng nghiệp vụ, chẳng hạn như xác thực, đăng ký khóa học, và quản lý bài tập.</p>
+            <div class="diagram-container">
+                <h3>Biểu đồ tầng dịch vụ nghiệp vụ</h3>
+                <img src="5.1.2.svg" alt="Business Services Layer Diagram" />
+            </div>
+        </div>
+
+        <h3>5.1.3 Tầng trung gian (Middleware Layer)</h3>
+        <div class="process-section">
+            <p>Tầng trung gian hỗ trợ truy cập cơ sở dữ liệu quan hệ (MySQL) và lưu trữ cloud (AWS S3).</p>
+            <div class="diagram-container">
+                <h3>Biểu đồ tầng trung gian</h3>
+                <img src="5.1.3.svg" alt="Middleware Layer Diagram" />
+            </div>
+        </div>
+
+        <h3>5.1.4 Tầng tái sử dụng cơ bản (Base Reuse Layer)</h3>
+        <div class="process-section">
+            <p>Tầng tái sử dụng cơ bản chứa các lớp hỗ trợ chức năng danh sách và các mẫu thiết kế (patterns).</p>
+            <div class="diagram-container">
+                <h3>Biểu đồ tầng tái sử dụng cơ bản</h3>
+                <img src="5.1.4.svg" alt="Base Reuse Layer Diagram" />
+            </div>
+        </div>
+
+        <h2>Luồng xử lý (Process View)</h2>
+        <p>Phần này mô tả các tiến trình chính, cách chúng tương tác, và ánh xạ đến các chức năng của hệ thống, đảm bảo hỗ trợ 1000 người dùng đồng thời.</p>
+        
+        <h3>6.1 Các tiến trình</h3>
+        <div class="process-section">
+            <ul>
+                <li>
+                    <strong>6.1.1 Tiến trình xác thực người dùng (UserAuthenticationProcess)</strong><br>
+                    Quản lý xác thực người dùng bằng JSON Web Token (JWT).<br>
+                    <strong>Phương thức:</strong><br>
+                    - <code>đăng nhập()</code>: Xác thực email/mật khẩu, trả về JWT token (24 giờ).<br>
+                    - <code>đăng ký()</code>: Tạo tài khoản, mã hóa mật khẩu bằng BCrypt, gửi email xác nhận.<br>
+                    <strong>Tương tác:</strong> Cung cấp token cho các tiến trình khác. Tích hợp với hệ thống phân quyền.<br>
+                    <strong>Hiệu suất:</strong> Xử lý 500 yêu cầu/giây.<br>
+                    <div class="diagram-container">
+                        <h3>Biểu đồ tiến trình xác thực người dùng</h3>
+                        <img src="6.1.1.svg" alt="UserAuthenticationProcess Diagram" />
+                    </div>
+                </li>
+                <li>
+                    <strong>6.1.2 Tiến trình quản lý khóa học (CourseManagementProcess)</strong><br>
+                    Quản lý vòng đời khóa học.<br>
+                    <strong>Phương thức:</strong><br>
+                    - <code>tạo khóa học()</code>: Tạo khóa học, lưu vào cơ sở dữ liệu, thông báo qua Feed.<br>
+                    - <code>cập nhật khóa học()</code>: Cập nhật thông tin, kiểm tra xung đột lịch học.<br>
+                    - <code>xóa khóa học()</code>: Xóa khóa học, lưu lịch sử.<br>
+                    <strong>Tương tác:</strong> Cung cấp dữ liệu cho StudentRegistrationProcess.<br>
+                    <strong>Bảo mật:</strong> Chỉ quản trị viên/giáo viên được phép thao tác.<br>
+                    <div class="diagram-container">
+                        <h3>Biểu đồ tiến trình quản lý khóa học</h3>
+                        <img src="6.1.2.svg" alt="CourseManagementProcess Diagram" />
+                    </div>
+                </li>
+                <li>
+                    <strong>6.1.3 Tiến trình đăng ký của học viên (StudentRegistrationProcess)</strong><br>
+                    Xử lý đăng ký khóa học và bài kiểm tra đầu vào.<br>
+                    <strong>Phương thức:</strong><br>
+                    - <code>đăng ký khóa học()</code>: Đăng ký học viên, gửi xác nhận.<br>
+                    - <code>làm bài kiểm tra đầu vào()</code>: Tạo bài kiểm tra, gợi ý lộ trình học theo CEFR.<br>
+                    - <code>lấy thông tin học viên()</code>: Truy xuất thông tin học viên.<br>
+                    <strong>Tương tác:</strong> Kết nối với AssignmentManagementProcess, NotificationSystem.<br>
+                    <strong>Mở rộng:</strong> Hỗ trợ tích hợp thanh toán.<br>
+                    <div class="diagram-container">
+                        <h3>Biểu đồ tiến trình đăng ký của học viên</h3>
+                        <img src="6.1.3.svg" alt="StudentRegistrationProcess Diagram" />
+                    </div>
+                </li>
+                <li>
+                    <strong>6.1.4 Tiến trình quản lý bài tập (AssignmentManagementProcess)</strong><br>
+                    Quản lý tạo, nộp, chấm điểm bài tập.<br>
+                    <strong>Phương thức:</strong><br>
+                    - <code>tạo bài tập()</code>: Tạo bài tập, đặt thời hạn.<br>
+                    - <code>nộp bài tập()</code>: Lưu bài nộp trên AWS S3, thông báo giáo viên.<br>
+                    - <code>chấm bài tập()</code>: Chấm điểm, gửi phản hồi.<br>
+                    <strong>Tương tác:</strong> Đồng bộ với SessionManagementProcess, NotificationSystem.<br>
+                    <strong>Hiệu suất:</strong> Chấm 1000 bài trắc nghiệm trong 5 phút.<br>
+                    <div class="diagram-container">
+                        <h3>Biểu đồ tiến trình quản lý bài tập</h3>
+                        <img src="6.1.4.svg" alt="AssignmentManagementProcess Diagram" />
+                    </div>
+                </li>
+                <li>
+                    <strong>6.1.5 Tiến trình quản lý buổi học (SessionManagementProcess)</strong><br>
+                    Quản lý lịch học, điểm danh, nhận xét.<br>
+                    <strong>Phương thức:</strong><br>
+                    - <code>tạo buổi học()</code>: Lên lịch, thông báo học viên.<br>
+                    - <code>điểm danh()</code>: Ghi nhận trạng thái điểm danh.<br>
+                    - <code>thêm nhận xét()</code>: Ghi nhận nhận xét.<br>
+                    <strong>Tương tác:</strong> Kết nối với CertificateIssuingProcess, NotificationSystem.<br>
+                    <strong>Bảo mật:</strong> Chỉ giáo viên được phép thao tác.<br>
+                    <div class="diagram-container">
+                        <h3>Biểu đồ tiến trình quản lý buổi học</h3>
+                        <img src="6.1.5.svg" alt="SessionManagementProcess Diagram" />
+                    </div>
+                </li>
+                <li>
+                    <strong>6.1.6 Tiến trình cấp chứng chỉ (CertificateIssuingProcess)</strong><br>
+                    Quản lý cấp chứng chỉ.<br>
+                    <strong>Phương thức:</strong><br>
+                    - <code>tạo chứng chỉ()</code>: Tạo chứng chỉ PDF, gửi qua email.<br>
+                    - <code>kiểm tra điều kiện()</code>: Kiểm tra điều kiện cấp chứng chỉ.<br>
+                    <strong>Tương tác:</strong> Kết nối với SessionManagementProcess, NotificationSystem.<br>
+                    <strong>Hiệu suất:</strong> Tạo 500 chứng chỉ trong 10 phút.<br>
+                    <div class="diagram-container">
+                        <h3>Biểu đồ tiến trình cấp chứng chỉ</h3>
+                        <img src="6.1.6.svg" alt="CertificateIssuingProcess Diagram" />
+                    </div>
+                </li>
+            </ul>
+            <div class="diagram-container">
+                <h3>Biểu đồ tổng quan các tiến trình</h3>
+                <img src="6.1.svg" alt="Processes Overview Diagram" />
+            </div>
+        </div>
+
+        <h3>6.2 Ánh xạ tiến trình đến các thành phần thiết kế</h3>
+        <div class="process-section">
+            <ul>
+                <li>
+                    <strong>6.2.1 UserAuthentication</strong><br>
+                    Lớp điều khiển xác thực người dùng, sử dụng JWT và BCrypt.<br>
+                    <div class="diagram-container">
+                        <h3>Biểu đồ ánh xạ UserAuthentication</h3>
+                        <img src="6.2.1.svg" alt="UserAuthentication Mapping Diagram" />
+                    </div>
+                </li>
+                <li>
+                    <strong>6.2.2 Course</strong><br>
+                    Lớp thực thể đại diện cho khóa học, lưu trữ trên MySQL.<br>
+                    <div class="diagram-container">
+                        <h3>Biểu đồ ánh xạ Course</h3>
+                        <img src="6.2.2.svg" alt="Course Mapping Diagram" />
+                    </div>
+                </li>
+                <li>
+                    <strong>6.2.3 Assignment</strong><br>
+                    Lớp thực thể đại diện cho bài tập, lưu trữ trên MySQL và AWS S3.<br>
+                    <div class="diagram-container">
+                        <h3>Biểu đồ ánh xạ Assignment</h3>
+                        <img src="6.2.3.svg" alt="Assignment Mapping Diagram" />
+                    </div>
+                </li>
+                <li>
+                    <strong>6.2.4 Session</strong><br>
+                    Lớp thực thể đại diện cho buổi học, lưu trữ lịch học và điểm danh.<br>
+                    <div class="diagram-container">
+                        <h3>Biểu đồ ánh xạ Session</h3>
+                        <img src="6.2.4.svg" alt="Session Mapping Diagram" />
+                    </div>
+                </li>
+                <li>
+                    <strong>6.2.5 Certificate</strong><br>
+                    Lớp thực thể đại diện cho chứng chỉ, lưu trữ trên AWS S3.<br>
+                    <div class="diagram-container">
+                        <h3>Biểu đồ ánh xạ Certificate</h3>
+                        <img src="6.2.5.svg" alt="Certificate Mapping Diagram" />
+                    </div>
+                </li>
+            </ul>
+            <div class="diagram-container">
+                <h3>Biểu đồ ánh xạ tiến trình đến thiết kế</h3>
+                <img src="6.2.svg" alt="Process to Design Elements Diagram" />
+            </div>
+        </div>
+
+        <h3>6.3 Phụ thuộc giữa mô hình tiến trình và mô hình thiết kế</h3>
+        <div class="process-section">
+            <p>Mô hình tiến trình phụ thuộc vào các lớp thực thể và điều khiển trong mô hình thiết kế, được thể hiện qua các mối quan hệ trong cơ sở dữ liệu và API.</p>
+            <div class="diagram-container">
+                <h3>Biểu đồ phụ thuộc mô hình</h3>
+                <img src="6.3.svg" alt="Process to Design Dependencies Diagram" />
+            </div>
+        </div>
+
+        <h3>6.4 Ánh xạ tiến trình đến triển khai</h3>
+        <div class="process-section">
+            <p>Các tiến trình được ánh xạ đến các thành phần triển khai như container Docker và trình duyệt web.</p>
+            <div class="diagram-container">
+                <h3>Biểu đồ ánh xạ triển khai</h3>
+                <img src="6.4.svg" alt="Process to Implementation Diagram" />
+            </div>
+        </div>
+
         <h2>Size and Performance</h2>
         <div class="process-section">
-            <p>Kiến trúc phần mềm của hệ thống ABC-ENGLISH được thiết kế để đáp ứng các yêu cầu về kích thước và hiệu suất, như đã được nêu trong Bản Đặc Tả Phụ [15]:</p>
+            <p>Kiến trúc phần mềm được thiết kế để đáp ứng các yêu cầu về kích thước và hiệu suất:</p>
             <ul>
-                <li><strong>Số lượng người dùng đồng thời:</strong> Hệ thống hỗ trợ lên đến 2000 người dùng đồng thời đối với cơ sở dữ liệu trung tâm và tối đa 500 người dùng đồng thời trên các máy chủ cục bộ trong bất kỳ thời điểm nào, đảm bảo xử lý lượng lớn yêu cầu mà không quá tải.</li>
-                <li><strong>Độ trễ khi truy cập cơ sở dữ liệu:</strong> Truy cập cơ sở dữ liệu danh mục khóa học với độ trễ không quá 10 giây, đảm bảo người dùng truy cập thông tin nhanh chóng.</li>
-                <li><strong>Hiệu suất giao dịch:</strong> Hoàn thành 80% tất cả các giao dịch (đăng ký khóa học, làm bài kiểm tra, nhận điểm số) trong vòng 2 phút, tối ưu hóa trải nghiệm người dùng.</li>
-                <li><strong>Yêu cầu về tài nguyên của client:</strong> Phần mềm client yêu cầu dưới 20 MB dung lượng ổ đĩa và 32 MB RAM, phù hợp với các máy tính cấu hình thấp.</li>
-                <li><strong>Kiến trúc Client-Server:</strong> Dựa trên mô hình client-server, với client triển khai trên PC cục bộ hoặc từ xa, tối ưu hóa tài nguyên hệ thống bằng cách giảm yêu cầu bộ nhớ và dung lượng ổ đĩa.</li>
+                <li><strong>Số lượng người dùng đồng thời:</strong> Hỗ trợ 1000 người dùng đồng thời trên cơ sở dữ liệu trung tâm, 500 người dùng trên máy chủ cục bộ.</li>
+                <li><strong>Độ trễ truy cập:</strong> Truy cập cơ sở dữ liệu (MySQL) với độ trễ dưới 10 giây.</li>
+                <li><strong>Hiệu suất giao dịch:</strong> Hoàn thành 80% giao dịch (đăng ký, làm bài tập, nhận điểm) trong 2 phút.</li>
+                <li><strong>Yêu cầu tài nguyên client:</strong> Ứng dụng web yêu cầu dưới 20 MB bộ nhớ trình duyệt và không cần cài đặt phần mềm bổ sung.</li>
+                <li><strong>Kiến trúc Client-Server:</strong> Client chạy trên trình duyệt, server triển khai trên Docker, tối ưu hóa tài nguyên.</li>
             </ul>
+            <div class="diagram-container">
+                <h3>Biểu đồ hiệu suất hệ thống</h3>
+                <img src="size.svg" alt="Size and Performance Diagram" />
+            </div>
         </div>
 
-        <!-- Phần Quality -->
         <h2>Quality</h2>
         <div class="process-section">
-            <p>Kiến trúc phần mềm của hệ thống ABC-ENGLISH hỗ trợ các yêu cầu chất lượng, như được nêu trong Bản Đặc Tả Phụ [15]:</p>
+            <p>Kiến trúc phần mềm hỗ trợ các yêu cầu chất lượng:</p>
             <ul>
-                <li><strong>Giao diện người dùng:</strong> Tuân thủ tiêu chuẩn hiện đại, tương thích với các hệ điều hành phổ biến, dễ sử dụng cho người dùng có kiến thức cơ bản về máy tính, không cần đào tạo thêm.</li>
-                <li><strong>Hỗ trợ trực tuyến:</strong> Mỗi tính năng có chức năng trợ giúp trực tuyến với hướng dẫn chi tiết, bao gồm các bước thực hiện và định nghĩa thuật ngữ hoặc từ viết tắt.</li>
-                <li><strong>Khả năng hoạt động liên tục:</strong> Hệ thống hoạt động 24/7, với thời gian ngừng hoạt động tối đa 4% trong một năm, đảm bảo độ ổn định cao.</li>
-                <li><strong>Thời gian giữa các sự cố (MTBF):</strong> Vượt quá 300 giờ, đảm bảo độ tin cậy trong quá trình hoạt động.</li>
-                <li><strong>Cập nhật phần mềm client:</strong> Các bản nâng cấp client có thể tải từ máy chủ qua internet, giúp người dùng dễ dàng tiếp cận bản cập nhật mới.</li>
+                <li><strong>Giao diện người dùng:</strong> Tuân thủ UX/UI hiện đại, tương thích với trình duyệt Chrome, Firefox, Safari, hỗ trợ đa ngôn ngữ.</li>
+                <li><strong>Hỗ trợ trực tuyến:</strong> Cung cấp trợ giúp trực tuyến với hướng dẫn chi tiết và định nghĩa thuật ngữ.</li>
+                <li><strong>Khả năng hoạt động liên tục:</strong> Hoạt động 24/7, thời gian ngừng hoạt động tối đa 4%.</li>
+                <li><strong>Thời gian giữa các sự cố (MTBF):</strong> Vượt quá 300 giờ.</li>
+                <li><strong>Cập nhật:</strong> Bản cập nhật client được tải trực tiếp qua trình duyệt, không cần cài đặt thủ công.</li>
             </ul>
+            <div class="diagram-container">
+                <h3>Biểu đồ chất lượng hệ thống</h3>
+                <img src="quality.svg" alt="Quality Diagram" />
+            </div>
         </div>
 
-        <!-- Phần Deployment View -->
-        <h2>Deployment View</h2>
+        <h2>Góc nhìn triển khai (Deployment View)</h2>
         <div class="process-section">
-            <p>Phần này mô tả kiến trúc triển khai (Deployment View) của hệ thống ABC-ENGLISH, bao gồm các node vật lý và cách ánh xạ các tiến trình (từ Process View) tới các node này. Hệ thống được triển khai qua Internet, không sử dụng mạng LAN nội bộ, để đảm bảo khả năng truy cập từ xa.</p>
-            <div class="diagram-container">
-                <h2>Biểu đồ triển khai (Deployment Diagram)</h2>
-                <img src="b3_2.svg" alt="Deployment Diagram of LMS System" />
+            <p>Phần này mô tả kiến trúc triển khai, bao gồm các node vật lý và ánh xạ tiến trình.</p>
+
+            <h3>7.1 Thiết bị client (Client Device)</h3>
+            <div class="process-section">
+                <p>Chạy ứng dụng web trên trình duyệt cho học viên, giáo viên, quản trị viên.</p>
+                <div class="diagram-container">
+                    <h3>Biểu đồ thiết bị client</h3>
+                    <img src="7.1.svg" alt="Client Device Diagram" />
+                </div>
             </div>
-            <div class="diagram-description">
-                <h3>Mô tả biểu đồ triển khai</h3>
-                <p>Biểu đồ triển khai thể hiện các node vật lý và cách các tiến trình được phân bổ trong hệ thống:</p>
-                <ul>
-                    <li><strong>Desktop PC 1 (Ứng dụng học viên):</strong> Chạy ứng dụng dành cho học viên, ánh xạ tới tiến trình <code>UserAuthenticationProcess</code> (phía client) và <code>StudentRegistrationProcess</code> (phía client). Kết nối với Registration Server thông qua Internet.</li>
-                    <li><strong>Desktop PC 2 (Hệ thống danh mục khóa học):</strong> Chạy ứng dụng truy cập danh mục khóa học, ánh xạ tới tiến trình <code>CourseManagementProcess</code> (phía client). Kết nối với Registration Server thông qua Internet.</li>
-                    <li><strong>Desktop PC 3 (Hệ thống thanh toán và quản lý):</strong> Chạy ứng dụng quản lý bài tập và buổi học, ánh xạ tới tiến trình <code>AssignmentManagementProcess</code> (phía client) và <code>SessionManagementProcess</code> (phía client). Kết nối với Registration Server thông qua Internet.</li>
-                    <li><strong>Registration Server (Máy chủ đăng ký):</strong> Là máy chủ trung tâm, ánh xạ tới các tiến trình chính: <code>UserAuthenticationProcess</code>, <code>CourseManagementProcess</code>, <code>StudentRegistrationProcess</code>, <code>AssignmentManagementProcess</code>, <code>SessionManagementProcess</code>. Xử lý toàn bộ logic nghiệp vụ và lưu trữ dữ liệu.</li>
-                    <li><strong>Internet:</strong> Tất cả giao tiếp giữa các Desktop PC và Registration Server đều được thực hiện qua Internet, đảm bảo khả năng truy cập từ xa và dễ dàng mở rộng.</li>
-                </ul>
+
+            <h3>7.2 Máy chủ đám mây (Cloud Server)</h3>
+            <div class="process-section">
+                <p>Máy chủ đám mây chạy container Docker, lưu trữ dữ liệu trên MySQL và AWS S3.</p>
+                <div class="diagram-container">
+                    <h3>Biểu đồ máy chủ đám mây</h3>
+                    <img src="7.2.svg" alt="Cloud Server Diagram" />
+                </div>
+            </div>
+
+            <h3>7.3 Internet</h3>
+            <div class="process-section">
+                <p>Kết nối giữa Client Device và Cloud Server, đảm bảo truy cập từ xa.</p>
+                <div class="diagram-container">
+                    <h3>Biểu đồ kết nối Internet</h3>
+                    <img src="7.3.svg" alt="Internet Connection Diagram" />
+                </div>
+            </div>
+
+            <div class="diagram-container">
+                <h3>Biểu đồ triển khai tổng quan</h3>
+                <img src="7..svg" alt="Deployment Diagram" />
             </div>
         </div>
     </div>
