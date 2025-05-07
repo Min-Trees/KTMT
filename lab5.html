@@ -79,141 +79,141 @@
                 <td>1</td>
                 <td>Tính sẵn sàng</td>
                 <td>Trong giờ học cao điểm (8-10h sáng), server backend bị tắt đột ngột do lỗi hệ điều hành hoặc thiếu tài nguyên.</td>
-                <td>Tất cả người dùng bị ngắt kết nối, các thao tác gửi bài tập hoặc xem tài liệu sẽ thất bại. Trang web báo lỗi 5xx.</td>
-                <td>Hệ thống nên có thông báo lỗi thân thiện người dùng và khuyến khích quay lại sau, đồng thời cần có cách backup dữ liệu để khôi phục nhanh chóng.</td>
+                <td>Hệ thống tự động chuyển sang server dự phòng trong vòng 1 phút, người dùng chỉ nhận thông báo ngắn về sự cố.</td>
+                <td>Hệ thống có cơ chế failover tự động, hiển thị thông báo thân thiện và khôi phục dịch vụ trong vòng 2 phút, đảm bảo dữ liệu được sao lưu liên tục.</td>
             </tr>
             <tr>
                 <td>2</td>
                 <td>Hiệu năng</td>
                 <td>Trong đợt kiểm tra đầu vào, 100 học viên cùng lúc truy cập trang làm bài kiểm tra. Server CPU tăng vọt.</td>
-                <td>Thời gian tải trang kéo dài, bài làm chậm phản hồi, đôi khi timeout.</td>
-                <td>Dù không có Load Balancer, hệ thống nên hỗ trợ 100–200 người dùng đồng thời với thời gian phản hồi dưới 5 giây nhờ tối ưu truy vấn và caching.</td>
+                <td>Hệ thống sử dụng caching và tối ưu truy vấn, thời gian tải trang dưới 3 giây, không xảy ra timeout.</td>
+                <td>Hệ thống hỗ trợ tối thiểu 200 người dùng đồng thời với thời gian phản hồi dưới 3 giây, sử dụng caching và tối ưu cơ sở dữ liệu.</td>
             </tr>
             <tr>
                 <td>3</td>
                 <td>Bảo mật</td>
                 <td>Một người dùng chưa đăng nhập gửi yêu cầu truy cập API /api/user/profile qua Postman.</td>
-                <td>Hệ thống trả về lỗi 401 Unauthorized, không tiết lộ thêm thông tin hệ thống hoặc stack trace.</td>
-                <td>Mọi API yêu cầu phải có JWT token, hệ thống phải chặn ngay các truy cập không xác thực.</td>
+                <td>Hệ thống trả về lỗi 401 Unauthorized với thông báo rõ ràng, không tiết lộ thông tin nhạy cảm.</td>
+                <td>Tất cả API yêu cầu JWT token hợp lệ, chặn truy cập không xác thực và ghi log chi tiết các yêu cầu trái phép.</td>
             </tr>
             <tr>
                 <td>4</td>
                 <td>Toàn vẹn dữ liệu</td>
                 <td>Học viên cố chỉnh sửa điểm số bài tập bằng cách sửa request trên DevTools (ví dụ đổi điểm từ 4 lên 9).</td>
-                <td>Server không xử lý vì điểm chỉ được chấm qua backend logic hoặc giáo viên.</td>
-                <td>Hệ thống phải xác minh quyền thao tác và không nhận bất kỳ thay đổi từ phía client không hợp lệ.</td>
+                <td>Server từ chối yêu cầu vì điểm số được xác thực và lưu trữ độc lập tại backend.</td>
+                <td>Hệ thống xác minh quyền và dữ liệu tại backend, từ chối mọi thay đổi không hợp lệ từ client.</td>
             </tr>
             <tr>
                 <td>5</td>
                 <td>Phục hồi</td>
                 <td>Trong khi học viên đang làm bài tập, mất điện đột ngột khiến trình duyệt bị tắt.</td>
-                <td>Khi học viên quay lại, tất cả dữ liệu bài tập đã mất.</td>
-                <td>Hệ thống nên hỗ trợ lưu tự động nội dung bài tập định kỳ (auto-save) hoặc cho phép lưu nháp thủ công.</td>
+                <td>Hệ thống tự động lưu bài tập mỗi 30 giây, học viên có thể tiếp tục làm bài khi quay lại.</td>
+                <td>Hệ thống hỗ trợ lưu tự động định kỳ (mỗi 30 giây) và cho phép khôi phục bài tập từ bản nháp gần nhất.</td>
             </tr>
             <tr>
                 <td>6</td>
                 <td>Truy vết (Auditability)</td>
                 <td>Quản trị viên phát hiện một lớp học bị xóa, muốn biết ai đã thực hiện thao tác đó.</td>
-                <td>Không có log hoặc lịch sử thao tác.</td>
-                <td>Hệ thống phải lưu vết các thao tác quan trọng như xóa lớp, sửa khóa học, ghi nhận người thực hiện và thời điểm.</td>
+                <td>Hệ thống cung cấp log chi tiết về người thực hiện, thời điểm và hành động xóa lớp.</td>
+                <td>Hệ thống lưu log tất cả thao tác quan trọng (xóa, sửa) với thông tin người dùng, thời gian và chi tiết hành động.</td>
             </tr>
             <tr>
                 <td>7</td>
                 <td>Hiệu năng</td>
                 <td>Giáo viên upload một file video dung lượng 200MB làm tài liệu giảng dạy.</td>
-                <td>Server mất nhiều thời gian để xử lý, có thể bị timeout nếu kết nối mạng không ổn định.</td>
-                <td>Cần có thanh tiến trình upload, giới hạn dung lượng nếu cần thiết, và xử lý lỗi tốt để không mất dữ liệu upload.</td>
+                <td>Hệ thống hiển thị thanh tiến trình, xử lý file trong vòng 30 giây và thông báo hoàn tất.</td>
+                <td>Hệ thống hỗ trợ upload file lớn với thanh tiến trình, giới hạn dung lượng 500MB và xử lý ổn định ngay cả khi mạng không ổn định.</td>
             </tr>
             <tr>
                 <td>8</td>
                 <td>Sẵn sàng</td>
                 <td>Server lưu trữ file tài liệu bị tắt tạm thời (ví dụ cloud bị gián đoạn).</td>
-                <td>Học viên truy cập file PDF nhưng nhận lỗi 404 hoặc 500.</td>
-                <td>Giao diện nên hiển thị thông báo rõ ràng như "Tài liệu đang được bảo trì" thay vì lỗi hệ thống không thân thiện.</td>
+                <td>Hệ thống hiển thị thông báo "Tài liệu đang được bảo trì, vui lòng thử lại sau" và chuyển sang server dự phòng.</td>
+                <td>Hệ thống có server dự phòng và hiển thị thông báo thân thiện khi dịch vụ bị gián đoạn, đảm bảo dịch vụ khôi phục trong 5 phút.</td>
             </tr>
             <tr>
                 <td>9</td>
                 <td>Độ tin cậy</td>
                 <td>Giáo viên đang chấm điểm bài tập, giữa chừng hệ thống gặp sự cố.</td>
-                <td>Sau khi restart, mất toàn bộ thông tin đang chấm dở.</td>
-                <td>Hệ thống nên lưu trạng thái tạm thời sau mỗi thao tác lớn để đảm bảo tiếp tục được sau khi lỗi.</td>
+                <td>Hệ thống tự động lưu trạng thái chấm điểm sau mỗi thao tác, giáo viên có thể tiếp tục sau khi hệ thống khôi phục.</td>
+                <td>Hệ thống lưu trạng thái tạm thời sau mỗi thao tác lớn, đảm bảo không mất dữ liệu khi xảy ra sự cố.</td>
             </tr>
             <tr>
                 <td>10</td>
                 <td>Bảo mật</td>
                 <td>Token JWT hết hạn trong lúc học viên đang sử dụng hệ thống.</td>
-                <td>Yêu cầu tiếp theo bị trả về 401 và người dùng không hiểu chuyện gì đang xảy ra.</td>
-                <td>Hệ thống nên tự động chuyển sang trang đăng nhập hoặc hiển thị popup yêu cầu xác thực lại, không gây mất dữ liệu.</td>
+                <td>Hệ thống tự động hiển thị popup yêu cầu đăng nhập lại, lưu trạng thái hiện tại của người dùng.</td>
+                <td>Hệ thống tự động chuyển hướng đến trang đăng nhập khi token hết hạn, lưu dữ liệu tạm thời để không gây gián đoạn.</td>
             </tr>
             <tr>
                 <td>11</td>
                 <td>Toàn vẹn dữ liệu</td>
                 <td>Học viên bấm "Nộp bài" nhiều lần do kết nối mạng kém.</td>
-                <td>Hệ thống ghi nhận nhiều bản nộp bài giống nhau.</td>
-                <td>Hệ thống cần kiểm tra trùng lặp và chỉ chấp nhận bản nộp cuối cùng hoặc mới nhất.</td>
+                <td>Hệ thống chỉ ghi nhận bản nộp bài mới nhất, loại bỏ các bản trùng lặp.</td>
+                <td>Hệ thống kiểm tra và chỉ lưu bản nộp bài mới nhất, ngăn chặn trùng lặp do lỗi mạng.</td>
             </tr>
             <tr>
                 <td>12</td>
                 <td>Sẵn sàng</td>
                 <td>Server được cập nhật (deploy phiên bản mới) trong giờ cao điểm.</td>
-                <td>Người dùng gặp lỗi 502 hoặc không thể truy cập.</td>
-                <td>Cần có chế độ bảo trì hiển thị trên giao diện và lên lịch deploy ngoài giờ cao điểm.</td>
+                <td>Hệ thống hiển thị chế độ bảo trì và hoàn tất cập nhật trong vòng 5 phút mà không làm gián đoạn người dùng.</td>
+                <td>Hệ thống hỗ trợ triển khai không gián đoạn (zero-downtime deployment) và thông báo bảo trì rõ ràng, lên lịch deploy ngoài giờ cao điểm.</td>
             </tr>
             <tr>
                 <td>13</td>
                 <td>Bảo mật</td>
                 <td>Học viên cố ý gọi API phân quyền người dùng để trở thành giáo viên.</td>
-                <td>Server từ chối vì không đủ quyền.</td>
-                <td>Role-based Access Control cần được kiểm tra chặt chẽ ở backend và ghi log lại nếu phát hiện truy cập trái phép.</td>
+                <td>Server từ chối yêu cầu và ghi log hành vi truy cập trái phép.</td>
+                <td>Hệ thống sử dụng Role-based Access Control, kiểm tra quyền tại backend và ghi log mọi truy cập không hợp lệ.</td>
             </tr>
             <tr>
                 <td>14</td>
                 <td>Hiệu năng</td>
                 <td>Trang Feed hiển thị 300 thông báo liên tục.</td>
-                <td>Trình duyệt lag, tải chậm hoặc crash.</td>
-                <td>Cần phân trang hoặc lazy loading để đảm bảo trải nghiệm mượt mà.</td>
+                <td>Hệ thống sử dụng lazy loading, tải 20 thông báo mỗi lần, đảm bảo không lag.</td>
+                <td>Hệ thống áp dụng phân trang hoặc lazy loading để hiển thị thông báo mượt mà, tải dưới 2 giây mỗi lần.</td>
             </tr>
             <tr>
                 <td>15</td>
                 <td>Toàn vẹn dữ liệu</td>
                 <td>Học viên sửa ID lớp trong API để nộp bài cho lớp khác.</td>
-                <td>Nếu không kiểm tra, bài sẽ vào lớp sai.</td>
-                <td>Server phải kiểm tra người dùng có thực sự thuộc lớp đó không trước khi lưu bài.</td>
+                <td>Server từ chối yêu cầu vì học viên không thuộc lớp đó, ghi log hành vi bất thường.</td>
+                <td>Hệ thống kiểm tra quyền truy cập lớp học tại backend, từ chối và ghi log các thao tác không hợp lệ.</td>
             </tr>
             <tr>
                 <td>16</td>
                 <td>Khả năng sử dụng</td>
                 <td>Học viên quên bấm lưu bài làm và rời khỏi trang.</td>
-                <td>Tất cả dữ liệu bị mất.</td>
-                <td>Hệ thống cần hiện cảnh báo trước khi đóng tab nếu bài chưa được lưu, đồng thời hỗ trợ lưu nháp.</td>
+                <td>Hệ thống tự động lưu nháp và hiển thị cảnh báo khi học viên cố đóng tab.</td>
+                <td>Hệ thống hỗ trợ lưu nháp tự động và cảnh báo trước khi đóng tab nếu có thay đổi chưa lưu.</td>
             </tr>
             <tr>
                 <td>17</td>
                 <td>Bảo mật</td>
                 <td>Admin quên đăng xuất tài khoản trên máy công cộng.</td>
-                <td>Người khác có thể sử dụng tài khoản admin.</td>
-                <td>Token có thời hạn ngắn (ví dụ 15 phút không hoạt động) và cần có nút "Logout từ tất cả thiết bị".</td>
+                <td>Hệ thống tự động đăng xuất sau 15 phút không hoạt động và cung cấp tùy chọn đăng xuất từ xa.</td>
+                <td>Token có thời hạn ngắn (15 phút không hoạt động), hỗ trợ đăng xuất từ tất cả thiết bị qua tùy chọn quản lý tài khoản.</td>
             </tr>
             <tr>
                 <td>18</td>
                 <td>Phục hồi</td>
                 <td>Khi đang upload bài tập, kết nối mạng học viên bị mất.</td>
-                <td>File bị lỗi hoặc không được ghi nhận.</td>
-                <td>Hệ thống nên hỗ trợ resume upload nếu mất kết nối hoặc thông báo rõ ràng nếu lỗi xảy ra.</td>
+                <td>Hệ thống hỗ trợ tiếp tục upload từ điểm bị gián đoạn, thông báo trạng thái rõ ràng.</td>
+                <td>Hệ thống hỗ trợ resume upload và hiển thị thông báo lỗi hoặc trạng thái upload rõ ràng.</td>
             </tr>
             <tr>
                 <td>19</td>
                 <td>Linh hoạt</td>
                 <td>Quản trị viên cần đổi lịch học cho 10 lớp khác nhau.</td>
-                <td>Phải chỉnh sửa thủ công từng lớp.</td>
-                <td>Hệ thống nên hỗ trợ thao tác hàng loạt hoặc import từ file Excel để cập nhật nhanh chóng.</td>
+                <td>Hệ thống cho phép cập nhật hàng loạt qua giao diện hoặc import từ file Excel.</td>
+                <td>Hệ thống hỗ trợ cập nhật hàng loạt hoặc import file Excel để thay đổi lịch học nhanh chóng và chính xác.</td>
             </tr>
             <tr>
                 <td>20</td>
                 <td>Độ tin cậy</td>
                 <td>Vào lúc 20h tối, hệ thống bất ngờ ngưng hoạt động do server quá tải.</td>
-                <td>Người dùng không thể đăng nhập hoặc sử dụng hệ thống.</td>
-                <td>Cần cảnh báo trước nếu tài nguyên hệ thống (CPU, RAM, disk) gần cạn và ghi nhận log chi tiết để xử lý sớm.</td>
+                <td>Hệ thống tự động mở rộng tài nguyên (auto-scaling) và khôi phục dịch vụ trong 3 phút.</td>
+                <td>Hệ thống giám sát tài nguyên (CPU, RAM, disk) và tự động mở rộng khi gần quá tải, ghi log chi tiết và khôi phục nhanh chóng.</td>
             </tr>
         </table>
     </div>
